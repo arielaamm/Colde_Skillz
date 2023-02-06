@@ -14,12 +14,22 @@ import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Calculator {
-    List<Executable> decisions;
+    private List<Executable> decisions;
+
+    public Calculator() {
+        decisions = new ArrayList<>();
+    }
+
+    public List<Executable> getDecisions() {
+        return decisions;
+    }
+
     public void calc(Game game, AnalyzeOutput facts) {
         switch (Knowledge.getInstance().getPartInGameNumber()) {
             case 1: //this is part one of the game!!!

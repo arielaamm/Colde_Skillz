@@ -19,7 +19,7 @@ public class Knowledge {
     }
     private Knowledge() {
         allProcesses = new ArrayList<>();
-        partInGameNumber = 0;
+        partInGameNumber = 1;
     }
     private List<LongTimeProcess> allProcesses;
     private int partInGameNumber; //can be 1/2/3

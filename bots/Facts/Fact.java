@@ -1,10 +1,7 @@
 package bots.Facts;
 
 public abstract class Fact {
-    private String description;
+    abstract public String getDescription();
 
-    public String getDescription() {
-        return description;
-    }
 }
 

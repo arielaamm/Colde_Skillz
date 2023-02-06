@@ -1,0 +1,27 @@
+package bots.Analyze.Attack;
+
+import bots.Facts.Attack;
+import penguin_game.Game;
+import penguin_game.Iceberg;
+
+import java.util.List;
+
+/**
+ * here add all the icebergs can upgrade
+ */
+public class CanUpgrade extends AttackOption{
+    AttackOption attackOption;
+    public CanUpgrade(AttackOption attackOption1) {
+        attackOption = attackOption1;
+    }
+    @Override
+    public List<Attack> getAlerts(Game game) {
+        List<Attack> ret = attackOption.getAlerts(game);
+        for (Iceberg ice : game.getMyIcebergs()) {
+            if (ice.canUpgrade()) {
+                ret.add(new bots.Facts.Attacks.CanUpgrade(ice));
+            }
+        }
+        return ret;
+    }
+}

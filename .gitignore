@@ -14,5 +14,5 @@ launch.json
 bin/
 out/
 *.zip
-/vscode/
+.vscode
 settings.json

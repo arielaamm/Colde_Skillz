@@ -9,9 +9,10 @@ launch.json
 /dataSources/
 /dataSources.local.xml
 # file: ~/.gitignore_global
-.DS_Store
-.idea
+/DS_Store/
+/idea/
 bin/
 out/
 *.zip
-vscode/
+/vscode/
+settings.json

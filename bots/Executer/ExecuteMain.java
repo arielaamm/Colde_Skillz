@@ -1,11 +1,11 @@
-package bots.Exeuter;
+package bots.Executer;
 
 import bots.DataBases.Knowledge;
 import bots.LongTimeProcess.LongTimeProcess;
 
 import java.util.List;
 
-public class ExecuteMain{
+public class ExecuteMain {
     public void execute(List<Executable> decision) {
         for (Executable executable : decision) {
             executable.execute(); //run the decisions of now

@@ -1,8 +1,8 @@
 package bots.Analyze;
 
 import bots.Analyze.Attack.AttackOption;
-import bots.Analyze.Attack.CanStrike;
-import bots.Analyze.Attack.DefultAttack;
+import bots.Analyze.Attack.CanAttackAnalyze;
+import bots.Analyze.Attack.DefaultAttackAnalyze;
 import bots.Analyze.IDS.DefultIDS;
 import bots.Analyze.IDS.IDS;
 import bots.Analyze.IDS.UnderAttackIDS;
@@ -22,7 +22,7 @@ public abstract class MainAnalyze {
      */
     public static AnalyzeOutput getFacts(Game game) {
         IDS ids = new UnderAttackIDS(new DefultIDS());
-        AttackOption attackOption = new CanStrike(new DefultAttack());
+        AttackOption attackOption = new CanAttackAnalyze(new DefaultAttackAnalyze());
         return new AnalyzeOutput(ids.getAlerts(game), attackOption.getAlerts(game), new ArrayList<>());
     }
 }

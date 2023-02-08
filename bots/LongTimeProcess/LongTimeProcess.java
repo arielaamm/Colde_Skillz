@@ -1,7 +1,6 @@
 package bots.LongTimeProcess;
 
-import bots.Exeuter.Executable;
-
+import bots.Executer.Executable;
 import java.util.Map;
 
 public class LongTimeProcess implements Executable{

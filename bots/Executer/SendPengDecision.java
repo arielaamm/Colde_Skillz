@@ -1,8 +1,8 @@
-package bots.Exeuter;
+package bots.Executer;
 
 import penguin_game.Iceberg;
 
-public class SendPeng implements Executable{
+public class SendPengDecision implements Executable {
     private Iceberg source;
     private Iceberg target;
     private int sum;
@@ -10,9 +10,9 @@ public class SendPeng implements Executable{
     /**
      * @param source - {@link Iceberg}: the source iceberg
      * @param target - {@link Iceberg}: the target iceberg
-     * @param sum - {@code int}: the number of Penguin to send
+     * @param sum    - {@code int}: the number of Penguin to send
      */
-    public SendPeng(Iceberg source, Iceberg target, int sum) {
+    public SendPengDecision(Iceberg source, Iceberg target, int sum) {
         this.source = source;
         this.target = target;
         this.sum = sum;

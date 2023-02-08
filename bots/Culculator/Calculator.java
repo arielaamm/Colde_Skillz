@@ -1,9 +1,9 @@
 package bots.Culculator;
 
 import bots.DataBases.Knowledge;
-import bots.Exeuter.Executable;
-import bots.Exeuter.SendPeng;
-import bots.Exeuter.UpgradeIceberg;
+import bots.Executer.Executable;
+import bots.Executer.SendPengDecision;
+import bots.Executer.UpgradeIcebergDecision;
 import bots.Facts.Alert;
 import bots.Facts.Alerts.UnderAttackAlert;
 import bots.Facts.AnalyzeOutput;
@@ -33,7 +33,9 @@ public class Calculator {
     //i want to go with you over on of this file
     public void calc(Game game, AnalyzeOutput facts) {
         switch (Knowledge.getPartInGameNumber()) {
+
             case 1: //this is part one of the game!!!
+                game.debug("start calculating");
                 Map<Iceberg, Integer> freePeng = new HashMap<>(); //here keep how many free pengs i have
                 for (Iceberg iceberg : game.getMyIcebergs()) {
                     //put the many of pengs in the iceberg in the start of the freePeng
@@ -64,24 +66,29 @@ public class Calculator {
                     }
                 }
                 for (Attack attack : facts.attacks) {
-                    if (attack.getDescription() == "CanAttack") {
+                    game.debug("reconize an attack alert witch is: " + attack.getDescription());
+                    if (attack.getDescription() == "canAttack") {
                         CanAttack alert = (CanAttack) attack;
                         //find closest iceberg to attack from. NOT DONE
                         for (Iceberg iceberg : game.getMyIcebergs()) {
                             if (freePeng.get(iceberg) > alert.getTarget().penguinAmount) {
                                 //attack from this iceberg
-                                SendPeng sendPeng = new SendPeng(iceberg, alert.getTarget(),
+                                SendPengDecision sendPengDecision = new SendPengDecision(iceberg, alert.getTarget(),
                                                                  alert.getTarget().penguinAmount + 1);
-                                decisions.add(sendPeng);
+                                game.debug("decide to attack from " + iceberg.id + " with " + alert.getTarget().penguinAmount + 1 + " pengs");
+                                decisions.add(sendPengDecision);
                                 freePeng.put(iceberg, freePeng.get(iceberg) - alert.getTarget().penguinAmount + 1);
+                            } else {
+                                game.debug("deside to not atack from " + iceberg.id);
+                                game.debug("enemy i didnt attack is: " + alert.getTarget().id);
                             }
                         }
                     }
                 }
                 for (Attack attack : facts.attacks) {
                     if (attack.getDescription() == "CanUpgrade") {
-                        UpgradeIceberg upgradeIceberg = new UpgradeIceberg(((CanUpgrade) attack).getToUpgrade());
-                        decisions.add(upgradeIceberg);
+                        UpgradeIcebergDecision upgradeIcebergDecision = new UpgradeIcebergDecision(((CanUpgrade) attack).getToUpgrade());
+                        decisions.add(upgradeIcebergDecision);
                     }
                 }
                 break;
@@ -146,8 +153,8 @@ public class Calculator {
             //now send the minimum between freePeng and how need to defend in the closest to
             if (freePeng.get(closest) > diifToWin) {
                 // can only send from here
-                SendPeng sendPeng = new SendPeng(closest, underAttack, diifToWin);
-                decisions.add(sendPeng);
+                SendPengDecision sendPengDecision = new SendPengDecision(closest, underAttack, diifToWin);
+                decisions.add(sendPengDecision);
                 //Update the freePeng
                 freePeng.put(closest, freePeng.get(closest) - diifToWin + 1);
                 freePeng.put(underAttack, 1);

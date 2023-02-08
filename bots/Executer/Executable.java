@@ -1,8 +1,8 @@
-package bots.Exeuter;
+package bots.Executer;
 
 public interface Executable {
     /**
-     * execute this func 
+     * execute this func
      */
     void execute();
 }

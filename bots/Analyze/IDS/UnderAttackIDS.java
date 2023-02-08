@@ -15,8 +15,9 @@ public class UnderAttackIDS extends IDS{
         this.ids = ids;
     }
 
-    /* NOTE: becuse of the line "List<Iceberg> sources = new ArrayList<>();"
+    /* NOTE: because of the line "List<Iceberg> sources = new ArrayList<>();"
     ** iceberg attacked from multiple locations will issue more than one alert
+    * ANSWER: It is not true, read the code again
     */
 
     @Override

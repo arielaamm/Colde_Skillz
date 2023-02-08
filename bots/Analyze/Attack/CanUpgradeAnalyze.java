@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * here add all the icebergs can upgrade
  */
-public class CanUpgrade extends AttackOption{
+public class CanUpgradeAnalyze extends AttackOption{
     AttackOption attackOption;
-    public CanUpgrade(AttackOption attackOption1) {
+    public CanUpgradeAnalyze(AttackOption attackOption1) {
         attackOption = attackOption1;
     }
     @Override

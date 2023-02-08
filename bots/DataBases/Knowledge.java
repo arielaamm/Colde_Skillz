@@ -22,9 +22,9 @@ public class Knowledge {
         partInGameNumber = 1;
     }
     private List<LongTimeProcess> allProcesses;
-    private int partInGameNumber; //can be 1/2/3
+    private static int partInGameNumber = 0; //can be 1/2/3
 
-    public int getPartInGameNumber() {
+    public static int getPartInGameNumber() {
         return partInGameNumber;
     }
 
@@ -38,7 +38,7 @@ public class Knowledge {
     public void removeProcess(LongTimeProcess process) {
         allProcesses.remove(process);
     }
-    public void nextPart() {
+    public void ProceedToNextPart() {
         partInGameNumber++;
     }
 }

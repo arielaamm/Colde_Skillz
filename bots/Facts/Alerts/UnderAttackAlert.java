@@ -5,6 +5,9 @@ import penguin_game.PenguinGroup;
 
 import java.util.List;
 
+/**
+ * Alert that the {@link Iceberg} under attack
+ */
 public class UnderAttackAlert extends Alert {
     private Iceberg target;
     private List<Iceberg> sources;
@@ -16,6 +19,10 @@ public class UnderAttackAlert extends Alert {
         this.attackers = attackers;
     }
 
+    
+    /** 
+     * @return target - {@link Iceberg}
+     */
     public Iceberg getTarget() {
         return target;
     }
@@ -25,7 +32,17 @@ public class UnderAttackAlert extends Alert {
         return "UnderAttack";
     }
 
+    /**
+     * @return list of the attackers - {@link PenguinGroup}
+     */
     public List<PenguinGroup> getAttackers() {
         return attackers;
+    }
+
+    /**
+     * @return list of the sources of the attackers - {@link Iceberg}
+     */
+    public List<Iceberg> getSources() {
+        return sources;
     }
 }

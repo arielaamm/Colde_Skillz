@@ -5,11 +5,11 @@ import java.util.List;
 public class AnalyzeOutput {
     public List<Alert> alerts;
     public List<Attack> attacks;
-    public List<Announcement> announcements;
-    public AnalyzeOutput(List<Alert> alerts1, List<Attack> attacks1, List<Announcement> announcements1) {
-        alerts = alerts1;
-        attacks = attacks1;
-        announcements = announcements1;
+    public List<Announcement> announcements; //?: when we coll Announcement? 
+    public AnalyzeOutput(List<Alert> alerts, List<Attack> attacks, List<Announcement> announcements) {
+        this.alerts = alerts;
+        this.attacks = attacks;
+        this.announcements = announcements;
     }
 
 }

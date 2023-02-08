@@ -11,13 +11,17 @@ import java.util.List;
 
 public class UnderAttackIDS extends IDS{
     IDS ids;
-    public UnderAttackIDS(IDS ids1) {
-        ids = ids1;
+    public UnderAttackIDS(IDS ids) {
+        this.ids = ids;
     }
+
+    /* NOTE: becuse of the line "List<Iceberg> sources = new ArrayList<>();"
+    ** iceberg attacked from multiple locations will issue more than one alert
+    */
 
     @Override
     public List<Alert> getAlerts(Game game) {
-        List<Alert> toRet = ids.getAlerts(game); //get prev alerts
+        List<Alert> alertList = ids.getAlerts(game); //get prev alerts
         for (Iceberg myIce : game.getMyIcebergs()) {
             //for each iceberg of mine will check if under attack
             List<Iceberg> sources = new ArrayList<>();
@@ -30,11 +34,11 @@ public class UnderAttackIDS extends IDS{
                     }
                     penguinGroupsAttackers.add(attackers);
                     //create the Alert and add it to the list
-                    toRet.add(new UnderAttackAlert(myIce, sources, penguinGroupsAttackers));
+                    alertList.add(new UnderAttackAlert(myIce, sources, penguinGroupsAttackers));
                 }
             }
         }
-        return toRet;
+        return alertList;
     }
 
 }

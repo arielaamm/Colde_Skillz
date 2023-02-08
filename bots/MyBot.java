@@ -3,21 +3,20 @@ package bots;
 import bots.Analyze.MainAnalyze;
 import bots.Culculator.Calculator;
 import bots.Exeuter.ExecuteMain;
-import bots.Facts.Alert;
-import bots.Facts.Alerts.*;
 import bots.Facts.AnalyzeOutput;
-import bots.Facts.Attacks.CanAttack;
-import bots.Facts.Fact;
 import penguin_game.*;
-
-
-import java.util.*;
 
 public class MyBot implements SkillzBot {
 
+    //[ ]: complite this func, and if so mark the task as complited
     public void doTurn(Game game) {
-        MainAnalyze mainAnalyze = new MainAnalyze();
-        AnalyzeOutput output = mainAnalyze.getFacts(game);
+        /*?: why do u create this MainAnalyze if u only need him for his getFacts()?
+        so i made MainAnalyze to abstract class and the getFacts to static and new u dont need to create instance 
+        */
+        // MainAnalyze mainAnalyze = new MainAnalyze(); 
+
+        AnalyzeOutput output = MainAnalyze.getFacts(game);// return the analysis
+
         //get all facts and now do next stages - still not in OOP
         Calculator calculator = new Calculator();
         calculator.calc(game, output);

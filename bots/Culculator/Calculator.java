@@ -29,9 +29,10 @@ public class Calculator {
     public List<Executable> getDecisions() {
         return decisions;
     }
-
+    //?: doesnt understand this code
+    //i want to go with you over on of this file
     public void calc(Game game, AnalyzeOutput facts) {
-        switch (Knowledge.getInstance().getPartInGameNumber()) {
+        switch (Knowledge.getPartInGameNumber()) {
             case 1: //this is part one of the game!!!
                 Map<Iceberg, Integer> freePeng = new HashMap<>(); //here keep how many free pengs i have
                 for (Iceberg iceberg : game.getMyIcebergs()) {
@@ -43,14 +44,14 @@ public class Calculator {
                         //handle all attacks get in
                         UnderAttackAlert underAttack = (UnderAttackAlert) alert;
                         int sumOfAttackers = 0; //the sum of the attackers;
-                        int closet = 100; //turns until the first group get
+                        int closetPengTillArrival = 100; //turns until the first group get
                         for (PenguinGroup group : underAttack.getAttackers()) {
                             sumOfAttackers += group.penguinAmount;
-                            if (group.turnsTillArrival < closet) {
-                                closet = group.turnsTillArrival;
+                            if (group.turnsTillArrival < closetPengTillArrival) {
+                                closetPengTillArrival = group.turnsTillArrival;
                             }
                         }
-                        sumOfAttackers -= closet * underAttack.getTarget().penguinsPerTurn;
+                        sumOfAttackers -= closetPengTillArrival * underAttack.getTarget().penguinsPerTurn;
                         if (sumOfAttackers < 0) {
                             sumOfAttackers = 0;
                         }
@@ -69,7 +70,8 @@ public class Calculator {
                         for (Iceberg iceberg : game.getMyIcebergs()) {
                             if (freePeng.get(iceberg) > alert.getTarget().penguinAmount) {
                                 //attack from this iceberg
-                                SendPeng sendPeng = new SendPeng(iceberg, alert.getTarget(), alert.getTarget().penguinAmount + 1);
+                                SendPeng sendPeng = new SendPeng(iceberg, alert.getTarget(),
+                                                                 alert.getTarget().penguinAmount + 1);
                                 decisions.add(sendPeng);
                                 freePeng.put(iceberg, freePeng.get(iceberg) - alert.getTarget().penguinAmount + 1);
                             }

@@ -6,15 +6,14 @@ import bots.Facts.Attacks.CanAttack;
 import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
-import java.util.Collection;
 import java.util.*;
 
 //NOTE: change the name from CanAttack -> CanAttackAnalyze becaues duplication
 public class CanAttackAnalyze extends AttackOption {
     AttackOption attackOption;
 
-    public CanAttackAnalyze(AttackOption attackOption1) {
-        attackOption = attackOption1;
+    public CanAttackAnalyze(AttackOption attackOption) {
+        this.attackOption = attackOption;
     }
 
     @Override
@@ -23,43 +22,49 @@ public class CanAttackAnalyze extends AttackOption {
         // culc the closest iceberg to put as targets
         List<Iceberg> optionToAttack = new ArrayList<>();
         for (Iceberg iceberg : game.getNeutralIcebergs()) {
-            optionToAttack.add(iceberg); //add all naturl icebergs to attack
+            optionToAttack.add(iceberg); // add all naturl icebergs to attack
         }
         for (Iceberg iceberg : game.getEnemyIcebergs()) {
-            optionToAttack.add(iceberg); //add all enemys icebergs to attack
+            optionToAttack.add(iceberg); // add all enemys icebergs to attack
         }
         List<Iceberg> myIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcebergs()) {
-            myIcebergs.add(iceberg); //add my icebergs
+            myIcebergs.add(iceberg); // add my icebergs
         }
         Vector<Pair<Iceberg, Double>> closests = getClosestIcebergToMe(myIcebergs, optionToAttack);
         Vector<Pair<Iceberg, Double>> IcbergsWithScale = new Vector<>();
         for (Pair<Iceberg, Double> toCalc : closests) {
-            IcbergsWithScale.add(new Pair<>(toCalc.getFirst(),  toCalc.getSecond()  * toCalc.getFirst().penguinAmount));
+            IcbergsWithScale.add(new Pair<>(toCalc.getFirst(), toCalc.getSecond() * toCalc.getFirst().penguinAmount));
             // clac distance divided by the number of peng in defence
         }
-        //chose the target with best scale
+        // chose the target with best scale
 
-        Pair<Iceberg, Double> closest = Collections.min(IcbergsWithScale, (a, b) -> {return (int) (a.getSecond() - b.getSecond());});
+        Pair<Iceberg, Double> closest = Collections.min(IcbergsWithScale, (a, b) -> {
+            return (int) (a.getSecond() - b.getSecond());
+        });
         // want to find the natural iceberg to attack so to avrage from all my icebergs
-        while (iAttackIt(game, closest.getFirst())) { //if get in means that the iceberg is under attack from me and dont have to attack again
+        while (iAttackIt(game, closest.getFirst())) { // if get in means that the iceberg is under attack from me and
+                                                      // dont have to attack again
             IcbergsWithScale.remove(closest);
             if (IcbergsWithScale.size() == 0) {
                 break;
             }
-            closest = Collections.max(IcbergsWithScale, (a,b) -> {return  (int) (b.getSecond() - a.getSecond());});
+            closest = Collections.max(IcbergsWithScale, (a, b) -> {
+                return (int) (b.getSecond() - a.getSecond());
+            });
         }
         if (optionToAttack.isEmpty()) {
             closest = new Pair<>(game.getEnemyIcepitalIcebergs()[0], 0.0);
         }
-
 
         attackList.add(new CanAttack(closest.getFirst()));
         return attackList;
     }
 
     /**
-     * this func find the 4 closest iceberg in toCheck with average distance from the icebergs in mine
+     * this func find the 4 closest iceberg in toCheck with average distance from
+     * the icebergs in mine
+     * 
      * @param mine
      * @param toCheck
      * @return
@@ -78,8 +83,10 @@ public class CanAttackAnalyze extends AttackOption {
             if (toRet.size() < 4) {
                 toRet.add(new Pair<>(target, newDistance));
             } else {
-                Pair<Iceberg, Double> farest = Collections.max(toRet, (a,b) -> {return (int) (a.getSecond() - b.getSecond());});
-                if (newDistance  < farest.getSecond()) {
+                Pair<Iceberg, Double> farest = Collections.max(toRet, (a, b) -> {
+                    return (int) (a.getSecond() - b.getSecond());
+                });
+                if (newDistance < farest.getSecond()) {
                     // found closer iceberg to target
                     toRet.remove(farest);
                     toRet.add(new Pair<>(target, newDistance));
@@ -92,6 +99,7 @@ public class CanAttackAnalyze extends AttackOption {
 
     /**
      * this func checks if I allready attacking a iceberg so choose other target
+     * 
      * @param game
      * @param target
      * @return
@@ -111,4 +119,10 @@ public class CanAttackAnalyze extends AttackOption {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "CanAttackAnalyze [attackOption=" + attackOption + "]\n";
+    }
+
 }

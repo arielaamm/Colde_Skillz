@@ -22,4 +22,11 @@ public class SendPengDecision implements Executable {
     public void execute() {
         source.sendPenguins(target, sum);
     }
+
+    @Override
+    public String toString() {
+        return "SendPengDecision [source=" + source.toString() + ", target=" + target.toString() + ", sum=" + sum
+                + "]\n";
+    }
+
 }

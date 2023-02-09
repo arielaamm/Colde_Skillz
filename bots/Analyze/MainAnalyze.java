@@ -23,6 +23,7 @@ public abstract class MainAnalyze {
     public static AnalyzeOutput getFacts(Game game) {
         IDS ids = new UnderAttackIDS(new DefultIDS());
         AttackOption attackOption = new CanAttackAnalyze(new DefaultAttackAnalyze());
-        return new AnalyzeOutput(ids.getAlerts(game), attackOption.getAlerts(game), new ArrayList<>());
+        return new AnalyzeOutput(ids.getAlerts(game), 
+                                attackOption.getAlerts(game), new ArrayList<>());
     }
 }

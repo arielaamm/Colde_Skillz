@@ -9,8 +9,7 @@ import java.util.List;
  * {@code abstract class} <pre/>
  * system ____ //[ ]: complite the definition
  */
-//?: why it is abstract class?
-//ANSWER: because we dont create a מופע from this clas
+
 public abstract class IDS {
     /**
      * @param game

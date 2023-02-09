@@ -1,7 +1,6 @@
 package bots.DataBases;
 
-//?: ??
-//ANSWER: this is a pair class like cpp, very useful to keep information tidy and nit
+//?: when do u doing to use it ?
 public class Pair<T, K> {
     private T first;
     private K second;

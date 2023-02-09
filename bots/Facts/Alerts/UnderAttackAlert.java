@@ -45,4 +45,12 @@ public class UnderAttackAlert extends Alert {
     public List<Iceberg> getSources() {
         return sources;
     }
+
+
+    @Override
+    public String toString() {
+        return "UnderAttackAlert [target=" + target + ", sources=" + sources + ", attackers=" + attackers + "]";
+    }
+
+
 }

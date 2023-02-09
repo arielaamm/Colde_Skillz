@@ -19,4 +19,9 @@ public class ExecuteMain {
         }
     }
 
+    @Override
+    public String toString() {
+        return "ExecuteMain [" + Knowledge.getInstance().toString();
+    }
+    
 }

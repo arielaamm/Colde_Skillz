@@ -7,4 +7,10 @@ public class StartSecondPart extends Announcement {
     public String getDescription() {
         return "StartSecondPart";
     }
+
+    @Override
+    public String toString() {
+        return "StartSecondPart";
+    }
+    
 }

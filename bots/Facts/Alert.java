@@ -5,6 +5,7 @@ package bots.Facts;
  * Alert of samething is happening
  */
 public abstract class Alert extends Fact {
-    //[X]: complite this class
+    //[x]: complite this class
+    
 }
 

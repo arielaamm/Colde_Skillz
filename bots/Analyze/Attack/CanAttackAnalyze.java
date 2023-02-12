@@ -1,5 +1,6 @@
 package bots.Analyze.Attack;
 
+import bots.DataBases.Knowledge;
 import bots.DataBases.Pair;
 import bots.Facts.Attack;
 import bots.Facts.Attacks.CanAttack;
@@ -24,8 +25,15 @@ public class CanAttackAnalyze extends AttackOption {
         for (Iceberg iceberg : game.getNeutralIcebergs()) {
             optionToAttack.add(iceberg); // add all naturl icebergs to attack
         }
-        for (Iceberg iceberg : game.getEnemyIcebergs()) {
-            optionToAttack.add(iceberg); // add all enemys icebergs to attack
+        Knowledge knowledge = Knowledge.getInstance();
+        if(knowledge.getPartInGameNumber() != 1) {
+            for (Iceberg iceberg : game.getEnemyIcebergs()) {
+                optionToAttack.add(iceberg); // add all enemys icebergs to attack
+            }
+        } else {
+            for (Iceberg iceberg : game.getEnemyIcepitalIcebergs()) {
+           //     optionToAttack.add(iceberg);
+            }
         }
         List<Iceberg> myIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcebergs()) {

@@ -1,13 +1,16 @@
 package bots.Analyze.IDS;
 
+import bots.DataBases.Pair;
 import bots.Facts.Alerts.UnderAttackAlert;
 import bots.Facts.Alert;
+import bots.Functions.NumOfAttackerCounter;
 import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class UnderAttackIDS extends IDS {
     IDS ids;
@@ -26,6 +29,17 @@ public class UnderAttackIDS extends IDS {
     public List<Alert> getAlerts(Game game) {
         List<Alert> alertList = ids.getAlerts(game); // get prev alerts
         for (Iceberg myIce : game.getMyIcebergs()) {
+            boolean underAttack = false;
+            Vector<Pair<Integer, Integer>> NextGame = NumOfAttackerCounter.getNumberOfAttackers(myIce, game);
+            for (Pair<Integer, Integer> turn : NextGame) {
+                if (turn.getFirst() > turn.getSecond()) {
+                    underAttack = true;
+                    break;
+                }
+            }
+            if (!underAttack) {
+                continue;
+            }
             // for each iceberg of mine will check if under attack
             List<Iceberg> sources = new ArrayList<>();
             List<PenguinGroup> penguinGroupsAttackers = new ArrayList<>();
@@ -37,8 +51,10 @@ public class UnderAttackIDS extends IDS {
                     }
                     penguinGroupsAttackers.add(attackers);
                     // create the Alert and add it to the list
-                    alertList.add(new UnderAttackAlert(myIce, sources, penguinGroupsAttackers));
                 }
+            }
+            if (sources.size() != 0) {
+                alertList.add(new UnderAttackAlert(myIce, sources, penguinGroupsAttackers));
             }
         }
         return alertList;

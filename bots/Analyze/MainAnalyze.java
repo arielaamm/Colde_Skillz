@@ -1,5 +1,8 @@
 package bots.Analyze;
 
+import bots.Analyze.AnnouncmentShouter.AnnouncementShouterAbs;
+import bots.Analyze.AnnouncmentShouter.DefultShouter;
+import bots.Analyze.AnnouncmentShouter.StartPartTwo;
 import bots.Analyze.Attack.AttackOption;
 import bots.Analyze.Attack.CanAttackAnalyze;
 import bots.Analyze.Attack.DefaultAttackAnalyze;
@@ -23,7 +26,8 @@ public abstract class MainAnalyze {
     public static AnalyzeOutput getFacts(Game game) {
         IDS ids = new UnderAttackIDS(new DefultIDS());
         AttackOption attackOption = new CanAttackAnalyze(new DefaultAttackAnalyze());
+        AnnouncementShouterAbs announcementShouterAbs = new StartPartTwo(new DefultShouter());
         return new AnalyzeOutput(ids.getAlerts(game), 
-                                attackOption.getAlerts(game), new ArrayList<>());
+                                attackOption.getAlerts(game), announcementShouterAbs.shout(game));
     }
 }

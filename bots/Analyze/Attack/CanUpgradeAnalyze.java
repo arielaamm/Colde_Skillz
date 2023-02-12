@@ -20,7 +20,7 @@ public class CanUpgradeAnalyze extends AttackOption {
     public List<Attack> getAlerts(Game game) {
         List<Attack> ret = attackOption.getAlerts(game);
         for (Iceberg ice : game.getMyIcebergs()) {
-            if (ice.canUpgrade()) {
+            if (ice.penguinAmount >= ice.upgradeCost) {
                 ret.add(new bots.Facts.Attacks.CanUpgrade(ice));
             }
         }

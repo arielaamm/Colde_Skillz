@@ -29,4 +29,14 @@ public class SendPengDecision implements Executable {
                 + "]\n";
     }
 
+    public Iceberg getSource() {
+        return source;
+    }
+    public Iceberg getTarget() {
+        return target;
+    }
+
+    public int getSum() {
+        return sum;
+    }
 }

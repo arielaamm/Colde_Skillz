@@ -22,9 +22,9 @@ public class Knowledge {
         partInGameNumber = 1;
     }
     private List<LongTimeProcess> allProcesses;
-    private static int partInGameNumber = 0; //can be 1/2/3
+    private int partInGameNumber = 1; //can be 1/2/3
 
-    public static int getPartInGameNumber() {
+    public int getPartInGameNumber() {
         return partInGameNumber;
     }
 

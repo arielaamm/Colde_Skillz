@@ -15,6 +15,7 @@ import bots.Facts.Attack;
 import bots.Facts.Attacks.CanAttack;
 import bots.Facts.Attacks.CanUpgrade;
 import bots.Functions.DistanceFunctions;
+import bots.Functions.IsAttack;
 import bots.Functions.NumOfAttackerCounter;
 import penguin_game.Game;
 import penguin_game.Iceberg;
@@ -45,35 +46,50 @@ public class Calculator {
         int a = 1;
         //switch (knowledge.getPartInGameNumber()) {
         switch (a) { //for now only check part 1
-                case 1: // this is part one of the game!!!
-                    //game.debug("start calculating");
-                    FreePengs freePeng = new FreePengs(game);
-                    for (Alert alert : facts.alerts) {
-                        if (alert.getDescription() == "UnderAttack") {
-                            //game.debug("start calcing the under attack alert");
-                            // handle all attacks get in
-                            UnderAttackAlert underAttack = (UnderAttackAlert) alert;
-                            defend(underAttack.getTarget(), game, freePeng, underAttack);
+            case 1: // this is part one of the game!!!
+                //game.debug("start calculating");
+                FreePengs freePeng = new FreePengs(game);
+                for (Alert alert : facts.alerts) {
+                    if (alert.getDescription() == "UnderAttack") {
+                        //game.debug("start calcing the under attack alert");
+                        // handle all attacks get in
+                        UnderAttackAlert underAttack = (UnderAttackAlert) alert;
+                        defend(underAttack.getTarget(), game, freePeng, underAttack);
+                    }
+                }
+                for (Attack attack : facts.attacks) {
+                    if (attack.getDescription() == "CanUpgrade") {
+                        game.debug("starts a canUpgrade");
+                        if (freePeng.get(((CanUpgrade) attack).getToUpgrade()) > ((CanUpgrade) attack).getToUpgrade().upgradeCost) {
+                            game.debug("in the if");
+                            game.debug("i have " + freePeng.get(((CanUpgrade) attack).getToUpgrade()));
+                            game.debug("i need " + ((CanUpgrade) attack).getToUpgrade().upgradeCost);
+                            UpgradeIcebergDecision upgradeIcebergDecision = new UpgradeIcebergDecision(
+                                    ((CanUpgrade) attack).getToUpgrade());
+                            decisions.add(upgradeIcebergDecision);
+                            freePeng.update(upgradeIcebergDecision);
                         }
                     }
-                    for (Attack attack : facts.attacks) {
-                        //game.debug("reconize an attack alert witch is: " + attack.getDescription());
-                        if (attack.getDescription() == "canAttack") {
-                            CanAttack alert = (CanAttack) attack;
-                            // find closest iceberg to attack from. NOT DONE
-                            List<Iceberg> myIces = new ArrayList<>();
-                            for (Iceberg iceberg : game.getMyIcebergs()) {
-                                myIces.add(iceberg);
+                }
+                for (Attack attack : facts.attacks) {
+                    //game.debug("reconize an attack alert witch is: " + attack.getDescription());
+                    if (attack.getDescription() == "canAttack") {
+                        CanAttack alert = (CanAttack) attack;
+                        // find closest iceberg to attack from. NOT DONE
+                        List<Iceberg> myIces = new ArrayList<>();
+                        for (Iceberg iceberg : game.getMyIcebergs()) {
+                            myIces.add(iceberg);
+                        }
+                        List<Iceberg> target = new ArrayList<>();
+                        target.add(alert.getTarget());
+                        for (Pair<Iceberg, Double> iceberg1 : DistanceFunctions.sortIcebergsByDistanceFromListCenters(target, myIces)) {
+                            Iceberg iceberg = iceberg1.getFirst();
+                            int spierPengs = 0;
+                            if (iceberg.owner == game.getEnemy()) {
+                                spierPengs = iceberg.penguinsPerTurn * (1 + iceberg1.getSecond().intValue());
                             }
-                            List<Iceberg> target = new ArrayList<>();
-                            target.add(alert.getTarget());
-                            for (Pair<Iceberg, Double> iceberg1 : DistanceFunctions.sortIcebergsByDistanceFromListCenters(target, myIces)) {
-                                Iceberg iceberg = iceberg1.getFirst();
-                                int spierPengs = 0;
-                                if (iceberg.owner == game.getEnemy()) {
-                                    spierPengs = iceberg.penguinsPerTurn * (1 + iceberg1.getSecond().intValue());
-                                }
-                                if (freePeng.get(iceberg) > alert.getTarget().penguinAmount + spierPengs) {
+                            if (freePeng.get(iceberg) > alert.getTarget().penguinAmount + spierPengs) {
+                                if (!(IsAttack.isEnemyAttacks(iceberg, game) && iceberg.owner == game.getNeutral())) {
                                     // attack from this iceberg
                                     SendPengDecision sendPengDecision = new SendPengDecision(iceberg, alert.getTarget(),
                                             alert.getTarget().penguinAmount + 1 + spierPengs);
@@ -82,31 +98,42 @@ public class Calculator {
                                     decisions.add(sendPengDecision);
                                     freePeng.update(sendPengDecision);
                                 } else {
-                                    //game.debug("deside to not atack from " + iceberg.id);
-                                    //game.debug("enemy i didnt attack is: " + alert.getTarget().id);
+                                    PenguinGroup theAttacker = new PenguinGroup();
+                                    for (PenguinGroup penguinGroup : game.getEnemyPenguinGroups()) {
+                                        if (penguinGroup.destination == alert.getTarget()) {
+                                            theAttacker = penguinGroup;
+                                            break;
+                                        }
+                                    }
+                                    if (theAttacker.turnsTillArrival < iceberg.getTurnsTillArrival(alert.getTarget())) {
+                                        // attack from this iceberg
+                                        SendPengDecision sendPengDecision = new SendPengDecision(iceberg, alert.getTarget(),
+                                                alert.getTarget().penguinAmount + 1 + spierPengs);
+                                        //game.debug("decide to attack from " + iceberg.id + " with "
+                                        //        + alert.getTarget().penguinAmount + 1 + " pengs");
+                                        decisions.add(sendPengDecision);
+                                        freePeng.update(sendPengDecision);
+                                    } else {
+                                        //game.debug("deside to not atack from " + iceberg.id);
+                                        //game.debug("enemy i didnt attack is: " + alert.getTarget().id);
+                                    }
                                 }
                             }
                         }
                     }
-                    for (Attack attack : facts.attacks) {
-                        if (attack.getDescription() == "CanUpgrade") {
-                            UpgradeIcebergDecision upgradeIcebergDecision = new UpgradeIcebergDecision(
-                                    ((CanUpgrade) attack).getToUpgrade());
-                            decisions.add(upgradeIcebergDecision);
-                            freePeng.update(upgradeIcebergDecision);
-                        }
-                    }
+                }
                     break;
-                case 2: // this is part two of the game!!! for now same as one;
+                    case 2: // this is part two of the game!!! for now same as one;
 
-                    break;
-                case 3: // this is part three of the game!!!
-                    break;
+                        break;
+                    case 3: // this is part three of the game!!!
+                        break;
 
-            }
+                }
 
-        return;
-    }
+                return;
+        }
+
 
     /**
      * this func send pengs from closest iceberg to the attacked one if it wll helps
@@ -124,7 +151,7 @@ public class Calculator {
         for (Iceberg iceberg : game.getMyIcebergs()) {
             myIcebergs.add(iceberg);
         }
-        //building the קלט to the function that sort all the icebergs
+        //building the  to the function that sort all the icebergs
         Vector<Pair<Iceberg, Double>> closestToTarget = DistanceFunctions.sortIcebergsByDistanceFromListCenters(underAttackIcebergs, myIcebergs);
         int firstTurnLose = 0;
         int missingPengs = 0;

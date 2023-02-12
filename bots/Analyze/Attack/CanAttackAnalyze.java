@@ -32,12 +32,15 @@ public class CanAttackAnalyze extends AttackOption {
             }
         } else {
             for (Iceberg iceberg : game.getEnemyIcepitalIcebergs()) {
-           //     optionToAttack.add(iceberg);
+                //optionToAttack.add(iceberg);
             }
         }
         List<Iceberg> myIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcebergs()) {
             myIcebergs.add(iceberg); // add my icebergs
+        }
+        if (optionToAttack.isEmpty()) {
+            return attackList;
         }
         Vector<Pair<Iceberg, Double>> closests = getClosestIcebergToMe(myIcebergs, optionToAttack);
         Vector<Pair<Iceberg, Double>> IcbergsWithScale = new Vector<>();

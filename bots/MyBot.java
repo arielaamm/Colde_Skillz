@@ -17,7 +17,7 @@ public class MyBot implements SkillzBot {
         }
         AnalyzeOutput analyzeOutput = MainAnalyze.getFacts(game);
         game.debug("attacks:\n" + analyzeOutput.toString());
-        //get all facts and now do next stages - still not in OOP
+        //get all facts & now do next stages - still not in OOP
         Calculator calculatorOutput = new Calculator();
         calculatorOutput.calc(game, analyzeOutput);
         game.debug("attacks:\n" + calculatorOutput.toString());

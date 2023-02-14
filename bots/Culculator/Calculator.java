@@ -34,8 +34,7 @@ public class Calculator {
         return decisions;
     }
 
-    // ?: doesnt understand this code
-    // i want to go with you over on of this file
+
     public void calc(Game game, AnalyzeOutput facts) {
         for (Announcement announcement : facts.announcements) {
             if (announcement.getDescription() == "StartSecondPart") {

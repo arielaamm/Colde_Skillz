@@ -9,7 +9,6 @@ import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 import java.util.*;
 
-//NOTE: change the name from CanAttack -> CanAttackAnalyze becaues duplication
 public class CanAttackAnalyze extends AttackOption {
     AttackOption attackOption;
 

@@ -10,7 +10,6 @@ import penguin_game.*;
 public class MyBot implements SkillzBot {
     //check
     public void doTurn(Game game) {
-        Knowledge knowledge = Knowledge.getInstance();
         game.debug("start turn, int part number: " + knowledge.getPartInGameNumber());
         if (game.getEnemyIcepitalIcebergs().length == 0) {
             return;

@@ -18,4 +18,9 @@ public class CanAttack extends Attack {
     public Iceberg getTarget() {
         return target;
     }
+
+    @Override
+    public String toString() {
+        return "CanAttack [target=" + target + "]";
+    }
 }

@@ -20,7 +20,7 @@ public class MyBot implements SkillzBot {
         //get all facts and now do next stages - still not in OOP
         Calculator calculatorOutput = new Calculator();
         calculatorOutput.calc(game, analyzeOutput);
-        game.debug("attacks:\n" + calculatorOutput.toString() +"\n");
+        game.debug("attacks:\n" + calculatorOutput.toString());
         game.debug(calculatorOutput.getDecisions().size() + "\n");
         ExecuteMain executeMain = new ExecuteMain();
         game.debug(executeMain.toString());

@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Knowledge {
     private static Knowledge knowledge;
+    private List<LongTimeProcess> allProcesses;
+    private int partInGameNumber = 1; //can be 1/2/3
     public static Knowledge getInstance() {
         if (knowledge == null) {
             knowledge = new Knowledge();
@@ -21,8 +23,7 @@ public class Knowledge {
         allProcesses = new ArrayList<>();
         partInGameNumber = 1;
     }
-    private List<LongTimeProcess> allProcesses;
-    private int partInGameNumber = 1; //can be 1/2/3
+
 
     public int getPartInGameNumber() {
         return partInGameNumber;
@@ -41,4 +42,9 @@ public class Knowledge {
     public void ProceedToNextPart() {
         partInGameNumber++;
     }
+    @Override
+    public String toString() {
+        return "Knowledge [allProcesses=" + allProcesses + ", partInGameNumber=" + partInGameNumber + "]";
+    }
+    
 }

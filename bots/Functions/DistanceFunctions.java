@@ -10,12 +10,14 @@ import java.util.Vector;
 
 public class DistanceFunctions {
     /**
-     * this func calc the average distance from the centers and sort the options by the distance
+     * this func calc the average distance from the centers and sort the options by
+     * the distance
+     * 
      * @param centers
      * @param toSort
      * @return
      */
-    public static Vector<Pair<Iceberg, Double>> sortIcebergsByDistanceFromListCenters(List<Iceberg> centers, List<Iceberg> toSort) {
+    public static Vector<Pair<Iceberg, Double>> sortIcebegByDistance(List<Iceberg> centers, List<Iceberg> toSort) {
         Vector<Pair<Iceberg, Double>> toRet = new Vector<>();
         for (Iceberg calc : toSort) {
             Double distance = 0.0;
@@ -25,7 +27,9 @@ public class DistanceFunctions {
             distance /= centers.size();
             toRet.add(new Pair<>(calc, distance));
         }
-        Collections.sort(toRet, (a,b) -> {return (int) (a.getSecond() - b.getSecond());});
+        Collections.sort(toRet, (a, b) -> {
+            return (int) (a.getSecond() - b.getSecond());
+        });
         return toRet;
     }
 

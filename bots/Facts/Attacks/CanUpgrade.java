@@ -18,4 +18,9 @@ public class CanUpgrade extends Attack {
     public Iceberg getToUpgrade() {
         return toUpgrade;
     }
+
+    @Override
+    public String toString() {
+        return "CanUpgrade [toUpgrade=" + toUpgrade + "]";
+    }
 }

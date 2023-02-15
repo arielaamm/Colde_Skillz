@@ -1,5 +1,6 @@
 package bots.Facts.Alerts;
 import bots.Facts.Alert;
+import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
@@ -10,10 +11,10 @@ import java.util.List;
  */
 public class UnderAttackAlert extends Alert {
     private Iceberg target;
-    private List<Iceberg> sources;
+    private List<IceBuilding> sources;
     private List<PenguinGroup> attackers;
 
-    public UnderAttackAlert(Iceberg target, List<Iceberg> sources, List<PenguinGroup> attackers) {
+    public UnderAttackAlert(Iceberg target, List<IceBuilding> sources, List<PenguinGroup> attackers) {
         this.target = target;
         this.sources = sources;
         this.attackers = attackers;
@@ -42,7 +43,7 @@ public class UnderAttackAlert extends Alert {
     /**
      * @return list of the sources of the attackers - {@link Iceberg}
      */
-    public List<Iceberg> getSources() {
+    public List<IceBuilding> getSources() {
         return sources;
     }
 

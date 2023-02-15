@@ -4,7 +4,7 @@ import bots.DataBases.Pair;
 import bots.Facts.Alerts.UnderAttackAlert;
 import bots.Facts.Alert;
 import bots.Functions.NumOfAttackerCounter;
-import penguin_game.Game;
+import penguin_game.*;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
@@ -41,7 +41,7 @@ public class UnderAttackIDS extends IDS {
                 continue;
             }
             // for each iceberg of mine will check if under attack
-            List<Iceberg> sources = new ArrayList<>();
+            List<IceBuilding> sources = new ArrayList<>();
             List<PenguinGroup> penguinGroupsAttackers = new ArrayList<>();
             for (PenguinGroup attackers : game.getEnemyPenguinGroups()) {
                 // check the enemy ping groups if they attack the iceberg

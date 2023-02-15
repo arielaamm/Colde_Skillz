@@ -13,6 +13,5 @@ launch.json
 /idea/
 /bin/
 /out/
-*.zip
 /vscode/
 settings.json

@@ -13,7 +13,7 @@ public class AnnouncementOperator {
     }
 
     public AnnouncementOperator(Game game) {
-        facts.addAll(new CanUpGrade().getAnnouncements(game));
+        facts.addAll(new CanUpgrade().getAnnouncements(game));
         facts.addAll(new StartSecondPart().getAnnouncements(game));
         facts.addAll(new StartThiredPart().getAnnouncements(game));
     }

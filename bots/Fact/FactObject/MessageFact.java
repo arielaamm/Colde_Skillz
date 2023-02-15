@@ -1,21 +1,21 @@
 package bots.Fact.FactObject;
 
-import penguin_game.Iceberg;
-
 public class MessageFact implements Fact{
-    Iceberg source;
-    String info = "";
-    int priority;
+    private String info = "";
+    private int priority;
     
+
+    
+    public MessageFact(String info, int priority) {
+        this.info = info;
+        this.priority = priority;
+    }
+
     @Override
     public int getPriority() {
         return priority;
     }
 
-    @Override
-    public Iceberg getSource() {
-        return source;
-    }
 
     @Override
     public String getDescription() {
@@ -24,7 +24,7 @@ public class MessageFact implements Fact{
 
     @Override
     public String toString() {
-        return "MessageFact [source=" + source + ", info=" + info + ", priority=" + priority + "]";
+        return "MessageFact [info=" + info + ", priority=" + priority + "]";
     }
     
 }

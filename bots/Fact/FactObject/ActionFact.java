@@ -3,18 +3,27 @@ package bots.Fact.FactObject;
 import penguin_game.Iceberg;
 
 public class ActionFact implements Fact{
-    Iceberg source;
-    Iceberg target;
-    String info = "";
-    int priority;
-    int amount;
+    private Iceberg source;
+    private Iceberg target;
+    private String info = "";
+    private int priority;
+    private int amount;
+
+
+    
+    public ActionFact(Iceberg source, Iceberg target, String info, int priority, int amount) {
+        this.source = source;
+        this.target = target;
+        this.info = info;
+        this.priority = priority;
+        this.amount = amount;
+    }
 
     @Override
     public int getPriority() {
         return priority;
     }
 
-    @Override
     public Iceberg getSource() {
         return source;
     }
@@ -34,7 +43,6 @@ public class ActionFact implements Fact{
 
     @Override
     public String toString() {
-        return "ActionFact [source=" + source + ", target=" + target + ", info=" + info + ", priority=" + priority
-                + ", amount=" + amount + "]";
+        return "ActionFact [source=" + source + ", target=" + target + ", info=" + info + ", priority=" + priority + ", amount=" + amount + "]";
     }
 }

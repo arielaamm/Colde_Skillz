@@ -11,6 +11,5 @@ public class MainAnalyze {
             new AlertOperator(game).getAlerts(),
             new AnnouncementOperator(game).getAnnouncements(),
             new AttactOperator(game).getAttacts());
-
     }
 }

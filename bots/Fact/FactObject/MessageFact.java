@@ -1,18 +1,18 @@
 package bots.Fact.FactObject;
 
+import bots.Fact.PriorityEnum;
+
 public class MessageFact implements Fact{
     private String info = "";
-    private int priority;
+    private PriorityEnum priority;
     
-
-    
-    public MessageFact(String info, int priority) {
+    public MessageFact(String info, PriorityEnum priority) {
         this.info = info;
         this.priority = priority;
     }
 
     @Override
-    public int getPriority() {
+    public PriorityEnum getPriority() {
         return priority;
     }
 

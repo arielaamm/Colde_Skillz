@@ -1,16 +1,17 @@
 package bots.Fact.FactObject;
 
-import penguin_game.Iceberg;
+import bots.Fact.PriorityEnum;
+import penguin_game.*;
 
 public class CanUpgradeMessage extends MessageFact {
-    Iceberg source;
+    IceBuilding source;
 
-    public CanUpgradeMessage(String info, int priority, Iceberg source) {
+    public CanUpgradeMessage(String info, PriorityEnum priority, IceBuilding source) {
         super(info, priority);
         this.source = source;
     }
 
-    public Iceberg getSource() {
+    public IceBuilding getSource() {
         return source;
     }
 

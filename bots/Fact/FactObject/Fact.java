@@ -1,7 +1,8 @@
 package bots.Fact.FactObject;
 
+import bots.Fact.PriorityEnum;
 
 public interface Fact {
-    public int getPriority();
+    public PriorityEnum getPriority();
     public String getDescription();
 }

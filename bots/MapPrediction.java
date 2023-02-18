@@ -14,18 +14,24 @@ import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
 public class MapPrediction {
-    public static int AmountAtIceberg(int turnAhead, IceBuilding iceberg, Game game) {
-        if (!(iceberg instanceof Iceberg)) {
-            return 0;
-        }
-        PenguinGroup[] allPenguinGroups = game.getAllPenguinGroups();
-        int amout = iceberg.penguinAmount;
-        boolean isReset = false;
-        Arrays.sort(allPenguinGroups, new Comparator<PenguinGroup>() {
+
+    public static PenguinGroup[] getSortedByTurnsTillArrival(PenguinGroup[] groups) {
+        PenguinGroup[] penguinGroup = groups;
+        Arrays.sort(penguinGroup, new Comparator<PenguinGroup>() {
             public int compare(PenguinGroup p1, PenguinGroup p2) {
                 return Integer.compare(p1.turnsTillArrival, p2.turnsTillArrival);
             }
         });
+        return penguinGroup;
+    }
+
+    public static int AmountAtIceberg(int turnAhead, IceBuilding iceberg, Game game) {
+        if (!(iceberg instanceof Iceberg)) {
+            return 0;
+        }
+        PenguinGroup[] allPenguinGroups = getSortedByTurnsTillArrival(game.getAllPenguinGroups());
+        int amout = iceberg.penguinAmount;
+        boolean isReset = false;
         for (int i = 0; i < turnAhead; i++) {
             for (PenguinGroup penguinGroup : allPenguinGroups) {
                 if (penguinGroup.destination == iceberg) {
@@ -60,8 +66,7 @@ public class MapPrediction {
         } else {
             UnderAttack = new UnderAttack().getAlerts(game);
         }
-        if(UnderAttack.isEmpty())
-        {
+        if (UnderAttack.isEmpty()) {
             return iceberg.penguinAmount;
         }
         faresAttack = UnderAttack.get(0);

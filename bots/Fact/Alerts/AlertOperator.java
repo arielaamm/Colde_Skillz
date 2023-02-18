@@ -16,16 +16,6 @@ public class AlertOperator {
         facts.addAll(new UnderAttack().getAlerts(game));
         facts.addAll(new UnderAttackOnIcepital().getAlerts(game));
     }
-
-    boolean isHandle;
-
-    public boolean isHandle() {
-        return isHandle;
-    }
-
-    public void setHandle(boolean isHandle) {
-        isHandle = this.isHandle;
-    }
     
     public List<Fact> getAlerts(Game game) {
         return facts;

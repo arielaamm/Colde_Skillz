@@ -8,16 +8,16 @@ public class CanAttackFact implements Fact {
     private Iceberg source;
     private String info = "";
     private PriorityEnum priority;
-    private int penguinAmount;
-    
-    
+    private int penguinInIceberg;
+    private int penguinAmountNeeded;
 
-    public CanAttackFact(Iceberg target, Iceberg source, String info, PriorityEnum priority, int penguinAmount) {
+    public CanAttackFact(Iceberg target, Iceberg source, String info, PriorityEnum priority, int penguinInIceberg, int penguinAmountNeeded) {
         this.target = target;
         this.source = source;
         this.info = info;
         this.priority = priority;
-        this.penguinAmount = penguinAmount;
+        this.penguinInIceberg = penguinInIceberg;
+        this.penguinAmountNeeded = penguinAmountNeeded;
     }
 
     @Override
@@ -34,9 +34,22 @@ public class CanAttackFact implements Fact {
         return priority;
     }
 
+    public Iceberg getSource() {
+        return source;
+    }
+
+    public int getPenguinInIceberg() {
+        return penguinInIceberg;
+    }
+
+    public int getPenguinAmountNeeded() {
+        return penguinAmountNeeded;
+    }
+
     @Override
     public String toString() {
         return "CanAttackFact [target=" + target + ", source=" + source + ", info=" + info + ", priority=" + priority
-                + ", penguinAmount=" + penguinAmount + "]";
+                + ", penguinInIceberg=" + penguinInIceberg + ", penguinAmountNeeded=" + penguinAmountNeeded + "]";
     }
+
 }

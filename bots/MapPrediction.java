@@ -2,17 +2,20 @@ package bots;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
+import bots.Fact.Alerts.UnderAttack;
+import bots.Fact.Alerts.UnderAttackOnIcepital;
+import bots.Fact.FactObject.Fact;
+import bots.Fact.FactObject.UnderAttackFact;
 import penguin_game.Game;
 import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
 
 public class MapPrediction {
-    public static int AmountAtIceberg(int turnAhead,IceBuilding iceberg,Game game)
-    {
-        if(!(iceberg instanceof Iceberg))
-        {
+    public static int AmountAtIceberg(int turnAhead, IceBuilding iceberg, Game game) {
+        if (!(iceberg instanceof Iceberg)) {
             return 0;
         }
         PenguinGroup[] allPenguinGroups = game.getAllPenguinGroups();
@@ -26,12 +29,9 @@ public class MapPrediction {
         for (int i = 0; i < turnAhead; i++) {
             for (PenguinGroup penguinGroup : allPenguinGroups) {
                 if (penguinGroup.destination == iceberg) {
-                    if(penguinGroup.destination.owner == game.getMyself())
-                    {
+                    if (penguinGroup.destination.owner == game.getMyself()) {
                         amout += penguinGroup.penguinAmount;
-                    }
-                    else
-                    {
+                    } else {
                         amout -= penguinGroup.penguinAmount;
                     }
                 }
@@ -40,7 +40,7 @@ public class MapPrediction {
                 }
             }
             if (amout > 0 && !isReset) {
-                amout += ((Iceberg)iceberg).penguinsPerTurn;
+                amout += ((Iceberg) iceberg).penguinsPerTurn;
             }
             if (amout > 0 && isReset) {
                 amout += 1;
@@ -50,5 +50,30 @@ public class MapPrediction {
         }
 
         return amout;
+    }
+
+    public static int getAmountFreePenguin(Iceberg iceberg, Game game) {
+        List<Fact> UnderAttack;
+        Fact faresAttack;
+        if (List.of(game.getMyIcepitalIcebergs()).contains(iceberg)) {
+            UnderAttack = new UnderAttackOnIcepital().getAlerts(game);
+        } else {
+            UnderAttack = new UnderAttack().getAlerts(game);
+        }
+        if(UnderAttack.isEmpty())
+        {
+            return iceberg.penguinAmount;
+        }
+        faresAttack = UnderAttack.get(0);
+        int turns = ((UnderAttackFact) faresAttack).getPenguinGroup().turnsTillArrival;
+
+        for (Fact fact : UnderAttack) {
+            if (((UnderAttackFact) fact).getPenguinGroup().turnsTillArrival > ((UnderAttackFact) faresAttack)
+                    .getPenguinGroup().turnsTillArrival) {
+                faresAttack = fact;
+                turns = ((UnderAttackFact) fact).getPenguinGroup().turnsTillArrival;
+            }
+        }
+        return AmountAtIceberg(turns, ((UnderAttackFact) faresAttack).getPenguinGroup().destination, game);
     }
 }

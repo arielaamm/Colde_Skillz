@@ -18,16 +18,6 @@ public class AnnouncementOperator {
         facts.addAll(new StartThiredPart().getAnnouncements(game));
     }
 
-    boolean isHandle;
-
-    public boolean isHandle() {
-        return isHandle;
-    }
-
-    public void setHandle(boolean isHandle) {
-        isHandle = this.isHandle;
-    }
-
     public List<Fact> getAnnouncements(Game game) {
         return facts;
     }
@@ -38,6 +28,8 @@ public class AnnouncementOperator {
 
     @Override
     public String toString() {
-        return "AnnouncementOperator [facts=" + facts + ", isHandle=" + isHandle + "]";
+        return "AnnouncementOperator [facts=" + facts + "]";
     }
+
+
 }

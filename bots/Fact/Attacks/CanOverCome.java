@@ -3,12 +3,12 @@ package bots.Fact.Attacks;
 import java.util.List;
 
 import bots.Fact.FactObject.Fact;
-import penguin_game.Game;
+import penguin_game.*;
 
-public class CanOverwhelm extends AttactOperator {
+public class CanOverCome extends AttactOperator {
     @Override
     public List<Fact> getAttacts(Game game) {
-        // TODO Auto-generated method stub
+        // TODO: complite the func!
         return null;
     }
 

@@ -14,17 +14,7 @@ public class AttactOperator {
 
     public AttactOperator(Game game) {
         facts.addAll(new CanAttack().getAttacts(game));
-        facts.addAll(new CanOverwhelm().getAttacts(game));
-    }
-
-    boolean isHandle;
-
-    public boolean isHandle() {
-        return isHandle;
-    }
-
-    public void setHandle(boolean isHandle) {
-        isHandle = this.isHandle;
+        facts.addAll(new CanOverCome().getAttacts(game));
     }
 
     public List<Fact> getAttacts(Game game) {
@@ -37,6 +27,6 @@ public class AttactOperator {
 
     @Override
     public String toString() {
-        return "AttactOperator [facts=" + facts + ", isHandle=" + isHandle + "]";
+        return "AttactOperator [facts=" + facts + "]";
     }
 }

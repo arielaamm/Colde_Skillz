@@ -15,13 +15,13 @@ public class UnderAttackOnIcepital extends AlertOperator {
         List<Fact> facts = new LinkedList<Fact>();
         for (PenguinGroup penguinGroup : game.getEnemyPenguinGroups()) {
             if (Arrays.asList(game.getMyIcepitalIcebergs()).contains(penguinGroup.destination)) {
-                if(MapPrediction.AmountAtIceberg(penguinGroup.turnsTillArrival,penguinGroup.destination,game) < 0)
-                {
-                facts.add(new UnderAttackFact("UnderAttack", PriorityEnum.SuperImportant, penguinGroup));
+                if (MapPrediction.AmountAtIceberg(penguinGroup.turnsTillArrival, penguinGroup.destination,
+                        game) < 0) {
+                    facts.add(new UnderAttackFact("UnderAttack", PriorityEnum.SuperImportant, penguinGroup));
                 }
             }
         }
         return facts;
     }
-    
+
 }

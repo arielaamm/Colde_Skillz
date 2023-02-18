@@ -17,7 +17,8 @@ public class UnderAttack extends AlertOperator {
             if (penguinGroup.destination.owner == game.getMyself() &&
                     !(Arrays.asList(game.getMyIcepitalIcebergs())
                             .contains(penguinGroup.destination))) {
-                if (MapPrediction.AmountAtIceberg(penguinGroup.turnsTillArrival, penguinGroup.destination, game) < 0) {
+                if (MapPrediction.AmountAtIceberg(penguinGroup.turnsTillArrival, penguinGroup.destination,
+                        game) < 0) {
                     facts.add(new UnderAttackFact("UnderAttack", PriorityEnum.Important, penguinGroup));
                 }
             }

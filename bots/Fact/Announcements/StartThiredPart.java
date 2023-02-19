@@ -11,7 +11,11 @@ public class StartThiredPart extends AnnouncementOperator {
     @Override
     public List<Fact> getAnnouncements(Game game) {
         List<Fact> facts = new LinkedList<Fact>();
+
+        //TODO: When does this message pop up? 
+        /*
         facts.add(new MessageFact("StartThiredPart",PriorityEnum.Unimportant));
+        */
         return facts;
     }
 

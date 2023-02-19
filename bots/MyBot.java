@@ -1,6 +1,6 @@
 package bots;
 
-import bots.;
+import bots.Calc.*;
 import bots.Fact.*;
 import penguin_game.*;
 

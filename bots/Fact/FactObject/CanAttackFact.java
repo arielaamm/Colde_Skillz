@@ -52,4 +52,40 @@ public class CanAttackFact implements Fact {
                 + ", penguinInIceberg=" + penguinInIceberg + ", penguinAmountNeeded=" + penguinAmountNeeded + "]";
     }
 
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result += info.hashCode();
+        result += source.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CanAttackFact other = (CanAttackFact) obj;
+        if (target == null) {
+            if (other.target != null)
+                return false;
+        } else if (!target.equals(other.target))
+            return false;
+        if (source == null) {
+            if (other.source != null)
+                return false;
+        } else if (!source.equals(other.source))
+            return false;
+        if (info == null) {
+            if (other.info != null)
+                return false;
+        } else if (!info.equals(other.info))
+            return false;
+        return true;
+    }
+
+    
 }

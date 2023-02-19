@@ -20,5 +20,26 @@ public class CanUpgradeMessage extends MessageFact {
         return super.toString() + "CanUpgradeMessage [source=" + source + "]";
     }
 
-    
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result += ((source == null) ? 0 : source.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CanUpgradeMessage other = (CanUpgradeMessage) obj;
+        if (source == null) {
+            if (other.source != null)
+                return false;
+        }
+        return true;
+    }
 }

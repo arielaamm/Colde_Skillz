@@ -13,7 +13,7 @@ public class CanUpgrade extends AnnouncementOperator {
     public List<Fact> getAnnouncements(Game game) {
         List<Fact> facts = new LinkedList<Fact>();
         for (Iceberg iceberg : game.getMyIcebergs()) {
-            if(iceberg.upgradeCost + 2 <= iceberg.penguinAmount)
+            if(iceberg.upgradeCost + 2 <= iceberg.penguinAmount && iceberg.canUpgrade())
             {
                 facts.add(new CanUpgradeMessage("CanUpgrade", PriorityEnum.LessImportant, iceberg));
             }

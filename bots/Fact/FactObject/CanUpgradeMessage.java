@@ -4,14 +4,14 @@ import bots.Fact.PriorityEnum;
 import penguin_game.*;
 
 public class CanUpgradeMessage extends MessageFact {
-    IceBuilding source;
+    Iceberg source;
 
-    public CanUpgradeMessage(String info, PriorityEnum priority, IceBuilding source) {
+    public CanUpgradeMessage(String info, PriorityEnum priority, Iceberg source) {
         super(info, priority);
         this.source = source;
     }
 
-    public IceBuilding getSource() {
+    public Iceberg getSource() {
         return source;
     }
 

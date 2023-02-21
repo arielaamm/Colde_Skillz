@@ -3,16 +3,16 @@ package bots.Calc;
 import java.util.LinkedList;
 import java.util.List;
 
+import bots.Calc.CalcObject.ExecuteCanAttack;
 import bots.Calc.CalcObject.ExecuteMessage;
+import bots.Calc.CalcObject.ExecuteUnderAttack;
 import bots.Fact.AnalyzeOutput;
-import bots.Fact.FactObject.CanAttackFact;
-import bots.Fact.FactObject.UnderAttackFact;
 import penguin_game.Game;
 
 public class CalcOutput {
-    public List<CanAttackFact> icebergsToAttack = new LinkedList<CanAttackFact>();
+    public List<ExecuteCanAttack> icebergsToAttack = new LinkedList<ExecuteCanAttack>();
     public List<ExecuteMessage> announcementsToPerform = new LinkedList<ExecuteMessage>();
-    public List<UnderAttackFact> icebergsToProtect = new LinkedList<UnderAttackFact>();
+    public List<ExecuteUnderAttack> icebergsToProtect = new LinkedList<ExecuteUnderAttack>();
 
     public CalcOutput(Game game, AnalyzeOutput analyzeOutput) {
         CalcOutput calcOutput = Calculator.calc(game, analyzeOutput);

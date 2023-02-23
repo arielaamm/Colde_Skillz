@@ -45,7 +45,7 @@ public class UnderAttackIDS extends IDS {
             List<PenguinGroup> penguinGroupsAttackers = new ArrayList<>();
             for (PenguinGroup attackers : game.getEnemyPenguinGroups()) {
                 // check the enemy ping groups if they attack the iceberg
-                if (attackers.destination == myIce) {
+                if (attackers.destination == myIce && attackers.destination instanceof Iceberg) {
                     if (!sources.contains(attackers.source)) {
                         sources.add(attackers.source);
                     }

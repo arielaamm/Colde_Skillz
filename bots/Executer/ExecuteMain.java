@@ -16,7 +16,9 @@ public class ExecuteMain {
             //run all the long time processes
             process.execute();
             process.endTurn();
+            
         }
+        // [ ]: delete dead prosses
     }
 
     @Override

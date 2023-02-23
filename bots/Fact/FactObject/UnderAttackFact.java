@@ -9,7 +9,7 @@ public class UnderAttackFact implements Fact {
     private PenguinGroup penguinGroup;
 
     public UnderAttackFact(String info, PriorityEnum priority, PenguinGroup penguinGroup) {
-        this.info = info;
+        this.info = "UnderAttack";
         this.priority = priority;
         this.penguinGroup = penguinGroup;
     }

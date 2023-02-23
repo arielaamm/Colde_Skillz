@@ -15,7 +15,7 @@ public class NumOfAttackerCounter {
      * the first in the pair will be num of attackers and the second num of defender
      * @param target
      * @param game
-     * @return
+     * @return {@code Pair} first - num of attackers,  second - num of defender
      */
     public static Vector<Pair<Integer, Integer>> getNumberOfAttackers(Iceberg target, Game game) {
         List<PenguinGroup> interestingGroups = new ArrayList<>(); //will be a sub list of all peng groups that will get to the target

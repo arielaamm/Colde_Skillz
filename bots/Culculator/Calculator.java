@@ -144,12 +144,12 @@ public class Calculator {
      * @param game
      * @param freePeng
      * @param alert
-     * @return will be safe
+     * @return {@code true} - win, {@code false} - lose
      */
     private boolean defend(Iceberg underAttack, Game game, FreePengs freePeng, UnderAttackAlert alert) {
         List<Iceberg> underAttackIcebergs = new ArrayList<>();
         underAttackIcebergs.add(underAttack);
-        List myIcebergs = new ArrayList<>();
+        List<Iceberg>  myIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcebergs()) {
             myIcebergs.add(iceberg);
         }

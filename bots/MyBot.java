@@ -11,6 +11,7 @@ public class MyBot implements SkillzBot {
 
     public void doTurn(Game game) {
         Knowledge knowledge = Knowledge.getInstance();
+        knowledge.setGame(game);
         game.debug("start turn, int part number: " + knowledge.getPartInGameNumber());
         if (game.getEnemyIcepitalIcebergs().length == 0) {
             return;

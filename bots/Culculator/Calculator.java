@@ -113,7 +113,7 @@ public class Calculator {
                                                 alert.getTarget(),
                                                 alert.getTarget().penguinAmount + 1 + spierPengs);
                                         game.debug("decide to attack from " + iceberg.id + " with " + 
-                                                    alert.getTarget().penguinAmount + 1 + " pengs");
+                                                    (alert.getTarget().penguinAmount + 1) + " pengs");
                                         decisions.add(sendPengDecision);
                                         freePeng.update(sendPengDecision);
                                     } else {

@@ -17,7 +17,7 @@ public class FreePengs {
         map = new HashMap<>();
         for (Iceberg mine : game.getMyIcebergs()) {
             Vector<Pair<Integer, Integer>> nextTurns = NumOfAttackerCounter.getNumberOfAttackers(mine, game);
-            game.debug(nextTurns.toString());
+            game.debug("Iceberg: " + mine.toString() +"nextTurns: " + nextTurns.toString());
             Vector<Integer> free = new Vector<>();
             for (Pair<Integer, Integer> number : nextTurns) {
                 free.add(number.getSecond() - number.getFirst());

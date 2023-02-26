@@ -73,13 +73,15 @@ public class NumOfAttackerCounter {
                     second += 1;
                 }
             }
-            if (executable instanceof SendPengDecision decision) {
+            if (executable instanceof SendPengDecision ) {
+                SendPengDecision decision = (SendPengDecision) executable;
                 if (target == decision.getTarget()) {
                     second += decision.getSum();
                     //handle when the peng get to the terget
                 }
             }
-            if (executable instanceof AccelerateDecision decision) {
+            if (executable instanceof AccelerateDecision) {
+                AccelerateDecision decision = (AccelerateDecision) executable;
                 int newArriveTurn, lastArriveTime;
                 if (decision.getPenguinGroup() == null) {
                     lastArriveTime = (int) (decision.getSource().getTurnsTillArrival(decision.getTarget()) / Math.pow(game.accelerationFactor, decision.getTheNumberTimeOfAcc()));

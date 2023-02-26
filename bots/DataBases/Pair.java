@@ -25,4 +25,9 @@ public class Pair<T, K> {
                 ", second=" + second +
                 '}';
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new Pair<T, K>(first, second);
+    }
 }

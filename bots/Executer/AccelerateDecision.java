@@ -5,16 +5,19 @@ import penguin_game.IceBuilding;
 import penguin_game.PenguinGroup;
 
 public class AccelerateDecision implements Executable {
-    PenguinGroup penguinGroup;
+    //NOTE: change it a little so look on it
+    private PenguinGroup penguinGroup;
 
-    IceBuilding source;
-    IceBuilding target;
-    int amount;
+    private IceBuilding source;
+    private IceBuilding target;
+    private int amount;
+    private int theNumberTimeOfAcc;
 
-    public AccelerateDecision(IceBuilding source, IceBuilding target, int amount) {
+    public AccelerateDecision(IceBuilding source, IceBuilding target, int amount, int theNumberTimeOfAcc) {
         this.source = source;
         this.target = target;
         this.amount = amount;
+        this.theNumberTimeOfAcc = theNumberTimeOfAcc;
     }
 
     public AccelerateDecision(PenguinGroup group) {
@@ -33,5 +36,35 @@ public class AccelerateDecision implements Executable {
                 }
             }
         }
+    }
+
+
+    public IceBuilding getSource() {
+        if (source == null) {
+            return penguinGroup.source;
+        }
+        return source;
+    }
+
+    public IceBuilding getTarget() {
+        if (target == null) {
+            return penguinGroup.destination;
+        }
+        return target;
+    }
+
+    public PenguinGroup getPenguinGroup() {
+        return penguinGroup;
+    }
+
+    public int getAmount() {
+        if (amount == 0) {
+            return penguinGroup.penguinAmount;
+        }
+        return amount;
+    }
+
+    public int getTheNumberTimeOfAcc() {
+        return theNumberTimeOfAcc;
     }
 }

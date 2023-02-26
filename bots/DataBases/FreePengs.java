@@ -50,7 +50,7 @@ public class FreePengs {
     public Integer get(Iceberg iceberg) {
         Vector<Integer> free = new Vector<>();
         for (Pair<Integer, Integer> number : map.get(iceberg)) {
-            free.add(number.getSecond() - number.getFirst());
+            free.add(- number.getSecond() + number.getFirst());
         }
         int minimumFree = 0;
         if (!free.isEmpty()) {

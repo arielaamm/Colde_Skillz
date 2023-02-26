@@ -3,10 +3,7 @@ package bots.Culculator;
 import bots.DataBases.FreePengs;
 import bots.DataBases.Knowledge;
 import bots.DataBases.Pair;
-import bots.Executer.Executable;
-import bots.Executer.NextPartDecision;
-import bots.Executer.SendPengDecision;
-import bots.Executer.UpgradeIcebergDecision;
+import bots.Executer.*;
 import bots.Facts.Alert;
 import bots.Facts.Alerts.UnderAttackAlert;
 import bots.Facts.AnalyzeOutput;
@@ -169,6 +166,18 @@ public class Calculator {
         if (firstTurnLose == 0) {
             return false;
         }
+        //now make faster the peng allready in way but get late
+        //fing all of those peng groups
+        List<PenguinGroup> lateInWay = new ArrayList<>();
+        for (PenguinGroup penguinGroup : game.getMyPenguinGroups()) {
+            if (penguinGroup.destination == underAttack) {
+                if (penguinGroup.turnsTillArrival < firstTurnLose) {
+                    AccelerateDecision accelerateDecision = new AccelerateDecision(penguinGroup);
+                    decisions.add(accelerateDecision);
+                    missingPengs -= penguinGroup.penguinAmount / game.accelerationCost;
+                }
+            }
+        }
         // now send help
         for (Pair<Iceberg, Double> canSendHelp : closestToTarget) {
             int freeHere = freePeng.get(canSendHelp.getFirst());
@@ -182,7 +191,8 @@ public class Calculator {
                 decisions.add(sendPengDecision);
                 freePeng.update(sendPengDecision);
             }
-            // [ ] have to add option to make the peng faster and then they will help
+            // [x] have to add option to make the peng faster and then they will help
+            //few lines before, better to fast late peng than send new
         }
         return missingPengs == 0;
     }

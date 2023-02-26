@@ -33,26 +33,41 @@ public class NumOfAttackerCounter {
                 attackers.add(penguinGroup);
             }
         }
-        int lastAttack = 0;
-        for (PenguinGroup penguinGroup : attackers) {
-            if (penguinGroup.turnsTillArrival > lastAttack) {
-                lastAttack = penguinGroup.turnsTillArrival; //find last attack
-            }
-        }
+        int lastAttack = 20;
+//        for (PenguinGroup penguinGroup : attackers) {
+//            if (penguinGroup.turnsTillArrival > lastAttack) {
+//                lastAttack = penguinGroup.turnsTillArrival; //find last attack
+//            }
+//        }
         Vector<Pair<Integer, Integer>> toRet = new Vector<>();
+        if (target.owner == game.getMyself()){
+            toRet.add(new Pair<>(target.penguinAmount, 0));
+        } else {
+            toRet.add(new Pair<>(0, target.penguinAmount));
+        }
+
         for (int i = 0; i < lastAttack + 2 ; i++) {
-            Pair<Integer, Integer> a = new Pair<>(0, target.penguinAmount + target.penguinsPerTurn * (i- 1));
-            for (PenguinGroup def : defender){
-                if (def.turnsTillArrival <= i) {
-                    a = new Pair<>(a.getFirst(), a.getSecond() + def.penguinAmount);
+            int first, second;
+            Pair<Integer, Integer> lastTurn = toRet.get(i);
+            if (lastTurn.getFirst() > lastTurn.getSecond()){
+                //in this turn th e iceberg is mine
+                first = lastTurn.getFirst() + target.penguinsPerTurn;
+                second = lastTurn.getSecond();
+            } else {
+                first = lastTurn.getFirst();
+                second = lastTurn.getSecond() + target.penguinsPerTurn;
+            }
+            for (PenguinGroup def : defender) {
+                if (def.turnsTillArrival == i + 1) {
+                    first += def.penguinAmount;
                 }
             }
             for (PenguinGroup att : attackers) {
-                if (att.turnsTillArrival < i) {
-                    a = new Pair<>(a.getFirst() + att.penguinAmount, a.getSecond());
+                if (att.turnsTillArrival== i + 1){
+                    second += att.penguinAmount;
                 }
             }
-            toRet.add(i, a);
+            toRet.add(new Pair<>(first, second));
         }
         //[ ] calc the Long Time Process impact on the number of pengs in the iceberg
         return toRet;

@@ -144,6 +144,7 @@ public class Calculator {
      * @return {@code true} - win, {@code false} - lose
      */
     private boolean defend(Iceberg underAttack, Game game, FreePengs freePeng, UnderAttackAlert alert) {
+        game.debug("defend a mark");
         List<Iceberg> underAttackIcebergs = new ArrayList<>();
         underAttackIcebergs.add(underAttack);
         List<Iceberg>  myIcebergs = new ArrayList<>();
@@ -154,12 +155,11 @@ public class Calculator {
         Vector<Pair<Iceberg, Double>> closestToTarget = DistanceFunctions.sortIcebegByDistance(underAttackIcebergs,
                 myIcebergs);
         int firstTurnLose = 0;
-        int missingPengs = 0;
+        int missingPengs = -freePeng.get(underAttack);
         Vector<Pair<Integer, Integer>> nextTurns = NumOfAttackerCounter.getNumberOfAttackers(underAttack, game);
         for (int i = 0; i < nextTurns.size(); i++) {
-            if (nextTurns.get(i).getSecond() - nextTurns.get(i).getFirst() < 0) {
+            if (nextTurns.get(i).getFirst() - nextTurns.get(i).getSecond() < 0) {
                 firstTurnLose = i;
-                missingPengs = -nextTurns.get(i).getSecond() + nextTurns.get(i).getFirst();
                 break;
             }
         }
@@ -168,24 +168,27 @@ public class Calculator {
         }
         //now make faster the peng allready in way but get late
         //fing all of those peng groups
-        List<PenguinGroup> lateInWay = new ArrayList<>();
         for (PenguinGroup penguinGroup : game.getMyPenguinGroups()) {
             if (penguinGroup.destination == underAttack) {
                 if (penguinGroup.turnsTillArrival < firstTurnLose) {
-                    AccelerateDecision accelerateDecision = new AccelerateDecision(penguinGroup);
-                    decisions.add(accelerateDecision);
-                    missingPengs -= penguinGroup.penguinAmount / game.accelerationCost;
+                    if (game.accelerationCost != 0) {
+                        AccelerateDecision accelerateDecision = new AccelerateDecision(penguinGroup);
+                        decisions.add(accelerateDecision);
+                        missingPengs -= penguinGroup.penguinAmount / game.accelerationCost;
+                    }
                 }
             }
         }
         // now send help
+        game.debug("missing" + missingPengs + "peng to survive");
         for (Pair<Iceberg, Double> canSendHelp : closestToTarget) {
             int freeHere = freePeng.get(canSendHelp.getFirst());
-            if (freeHere < 0) {
+            if (freeHere <= 0) {
                 continue;
             }
             if (canSendHelp.getFirst().getTurnsTillArrival(underAttack) < firstTurnLose) {
-                int numSent = Math.min(missingPengs, freePeng.get(canSendHelp.getFirst()));
+                game.debug("find source to send");
+                int numSent = Math.min(missingPengs, freeHere);
                 missingPengs -= numSent;
                 SendPengDecision sendPengDecision = new SendPengDecision(canSendHelp.getFirst(), underAttack, numSent);
                 decisions.add(sendPengDecision);

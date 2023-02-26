@@ -32,7 +32,7 @@ public class UnderAttackIDS extends IDS {
             boolean underAttack = false;
             Vector<Pair<Integer, Integer>> NextGame = NumOfAttackerCounter.getNumberOfAttackers(myIce, game);
             for (Pair<Integer, Integer> turn : NextGame) {
-                if (turn.getFirst() > turn.getSecond()) {
+                if (turn.getFirst() < turn.getSecond()) {
                     underAttack = true;
                     break;
                 }

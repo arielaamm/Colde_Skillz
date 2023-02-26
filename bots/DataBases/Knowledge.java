@@ -2,9 +2,12 @@ package bots.DataBases;
 
 import bots.LongTimeProcess.LongTimeProcess;
 import penguin_game.Game;
+import penguin_game.Iceberg;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * this is a singleton!!!
@@ -16,6 +19,7 @@ public class Knowledge {
     private int partInGameNumber = 1; //can be 1/2/3
 
     private static Game game;
+    private static List<Iceberg> closest;
 
 
     public static Knowledge getInstance() {
@@ -27,6 +31,7 @@ public class Knowledge {
     private Knowledge() {
         allProcesses = new ArrayList<>();
         partInGameNumber = 1;
+        closest = new LinkedList<>();
     }
 
 
@@ -54,7 +59,14 @@ public class Knowledge {
     public void setGame(Game game) {
         Knowledge.game = game;
     }
-    
+    public static List<Iceberg> getClosest() {
+        return closest;
+    }
+    public static void setClosest(Vector<Pair<Iceberg, Double>> closest) {
+        for (int i = 0; i < 2; i++) {
+            Knowledge.closest.add(closest.get(i).getFirst());
+        }
+    }
     @Override
     public String toString() {
         return "Knowledge [allProcesses=" + allProcesses + ", partInGameNumber=" + partInGameNumber + "]";

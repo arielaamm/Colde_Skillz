@@ -32,25 +32,36 @@ public class Calculator {
     }
 
     public void calc(Game game, AnalyzeOutput facts) {
+        Knowledge knowledge = Knowledge.getInstance();
+        FreePengs freePeng = new FreePengs(game);
         for (Announcement announcement : facts.announcements) {
             if (announcement.getDescription() == "StartSecondPart") {
                 decisions.add(new NextPartDecision());
+                
             }
         }
-        Knowledge knowledge = Knowledge.getInstance();
+        for (Iceberg iceberg : Knowledge.getClosest()) {
+            if(iceberg.owner != game.getMyself())
+            {
+                boolean b = defend(iceberg, game, freePeng);
+                if (b)
+                {
+                    game.debug("can defend");
+                }
+            }
+        }
         int a = 1;
         // switch (knowledge.getPartInGameNumber()) {
         switch (a) { // for now only check part 1
             case 1: // this is part one of the game!!!
                 game.debug("start calculating");
-                FreePengs freePeng = new FreePengs(game);
                 for (Alert alert : facts.alerts) {
                     if (alert.getDescription() == "UnderAttack") {
                         // game.debug("start calcing the under attack alert");
                         // handle all attacks get in
                         UnderAttackAlert underAttack = (UnderAttackAlert) alert;
                         game.debug(underAttack);
-                        defend(underAttack.getTarget(), game, freePeng, underAttack);
+                        defend(underAttack.getTarget(), game, freePeng);
                     }
                 }
                 
@@ -143,7 +154,7 @@ public class Calculator {
      * @param alert
      * @return {@code true} - win, {@code false} - lose
      */
-    private boolean defend(Iceberg underAttack, Game game, FreePengs freePeng, UnderAttackAlert alert) {
+    private boolean defend(Iceberg underAttack, Game game, FreePengs freePeng) {
         game.debug("defend a mark");
         List<Iceberg> underAttackIcebergs = new ArrayList<>();
         underAttackIcebergs.add(underAttack);
@@ -155,7 +166,12 @@ public class Calculator {
         Vector<Pair<Iceberg, Double>> closestToTarget = DistanceFunctions.sortIcebegByDistance(underAttackIcebergs,
                 myIcebergs);
         int firstTurnLose = 0;
-        int missingPengs = -freePeng.get(underAttack);
+        int missingPengs = 0;
+        try {
+            missingPengs = -freePeng.get(underAttack);
+        } catch (Exception e) {
+            missingPengs =0;
+        }
         Vector<Pair<Integer, Integer>> nextTurns = NumOfAttackerCounter.getNumberOfAttackers(underAttack, game);
         for (int i = 0; i < nextTurns.size(); i++) {
             if (nextTurns.get(i).getFirst() - nextTurns.get(i).getSecond() < 0) {

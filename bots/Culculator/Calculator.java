@@ -14,6 +14,7 @@ import bots.Facts.Attacks.CanUpgrade;
 import bots.Functions.DistanceFunctions;
 import bots.Functions.IsAttack;
 import bots.Functions.NumOfAttackerCounter;
+import bots.LongTimeProcess.LongTimeProcess;
 import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
@@ -22,6 +23,7 @@ import java.util.*;
 
 public class Calculator {
     private List<Executable> decisions;
+    Knowledge knowledge = Knowledge.getInstance();
 
     public Calculator() {
         decisions = new ArrayList<>();
@@ -32,20 +34,17 @@ public class Calculator {
     }
 
     public void calc(Game game, AnalyzeOutput facts) {
-        Knowledge knowledge = Knowledge.getInstance();
         FreePengs freePeng = new FreePengs(game);
         for (Announcement announcement : facts.announcements) {
             if (announcement.getDescription() == "StartSecondPart") {
                 decisions.add(new NextPartDecision());
-                
+
             }
         }
-        for (Iceberg iceberg : Knowledge.getClosest()) {
-            if(iceberg.owner != game.getMyself())
-            {
+        for (Iceberg iceberg : Knowledge.getClosestIceberg()) {
+            if (iceberg.owner != game.getMyself()) {
                 boolean b = defend(iceberg, game, freePeng);
-                if (b)
-                {
+                if (b) {
                     game.debug("can defend");
                 }
             }
@@ -64,16 +63,16 @@ public class Calculator {
                         defend(underAttack.getTarget(), game, freePeng);
                     }
                 }
-                
+
                 for (Attack attack : facts.attacks) {
                     if (attack.getDescription() == "CanUpgrade") {
                         game.debug("starts a canUpgrade");
-                        if (freePeng.get(((CanUpgrade) attack).getToUpgrade()) > ((CanUpgrade) attack)
-                                .getToUpgrade().upgradeCost) {
-                            game.debug("i have " + freePeng.get(((CanUpgrade) attack).getToUpgrade()));
-                            game.debug("i need " + ((CanUpgrade) attack).getToUpgrade().upgradeCost);
+                        if (freePeng.get(((CanUpgrade) attack).getIceberg()) > ((CanUpgrade) attack)
+                                .getIceberg().upgradeCost) {
+                            game.debug("i have " + freePeng.get(((CanUpgrade) attack).getIceberg()));
+                            game.debug("i need " + ((CanUpgrade) attack).getIceberg().upgradeCost);
                             UpgradeIcebergDecision upgradeIcebergDecision = new UpgradeIcebergDecision(
-                                    ((CanUpgrade) attack).getToUpgrade());
+                                    ((CanUpgrade) attack).getIceberg());
                             decisions.add(upgradeIcebergDecision);
                             freePeng.update(upgradeIcebergDecision);
                             game.debug("!!!! Upgraded !!!!");
@@ -120,8 +119,8 @@ public class Calculator {
                                         SendPengDecision sendPengDecision = new SendPengDecision(iceberg,
                                                 alert.getTarget(),
                                                 alert.getTarget().penguinAmount + 1 + spierPengs);
-                                        game.debug("decide to attack from " + iceberg.id + " with " + 
-                                                    (alert.getTarget().penguinAmount + 1) + " pengs");
+                                        game.debug("decide to attack from " + iceberg.id + " with " +
+                                                (alert.getTarget().penguinAmount + 1) + " pengs");
                                         decisions.add(sendPengDecision);
                                         freePeng.update(sendPengDecision);
                                     } else {
@@ -158,7 +157,7 @@ public class Calculator {
         game.debug("defend a mark");
         List<Iceberg> underAttackIcebergs = new ArrayList<>();
         underAttackIcebergs.add(underAttack);
-        List<Iceberg>  myIcebergs = new ArrayList<>();
+        List<Iceberg> myIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcebergs()) {
             myIcebergs.add(iceberg);
         }
@@ -170,7 +169,7 @@ public class Calculator {
         try {
             missingPengs = -freePeng.get(underAttack);
         } catch (Exception e) {
-            missingPengs =0;
+            missingPengs = 0;
         }
         Vector<Pair<Integer, Integer>> nextTurns = NumOfAttackerCounter.getNumberOfAttackers(underAttack, game);
         for (int i = 0; i < nextTurns.size(); i++) {
@@ -182,14 +181,14 @@ public class Calculator {
         if (firstTurnLose == 0) {
             return false;
         }
-        //now make faster the peng allready in way but get late
-        //fing all of those peng groups
+        // now make faster the peng allready in way but get late
+        // fing all of those peng groups
         for (PenguinGroup penguinGroup : game.getMyPenguinGroups()) {
             if (penguinGroup.destination == underAttack) {
                 if (penguinGroup.turnsTillArrival < firstTurnLose) {
                     if (game.accelerationCost != 0) {
                         AccelerateDecision accelerateDecision = new AccelerateDecision(penguinGroup);
-                        decisions.add(accelerateDecision);
+                        knowledge.addProcess(new LongTimeProcess(1, accelerateDecision, "accelerateDecision"));
                         missingPengs -= penguinGroup.penguinAmount / game.accelerationCost;
                     }
                 }
@@ -211,7 +210,7 @@ public class Calculator {
                 freePeng.update(sendPengDecision);
             }
             // [x] have to add option to make the peng faster and then they will help
-            //few lines before, better to fast late peng than send new
+            // few lines before, better to fast late peng than send new
         }
         return missingPengs == 0;
     }

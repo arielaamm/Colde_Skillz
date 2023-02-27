@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public class DistanceFunctions {
     /**
-     * this func calc the average distance from the centers and sort the options by
+     * this func  calc the average distance from the centers and sort the options by
      * the distance
      * 
      * @param centers

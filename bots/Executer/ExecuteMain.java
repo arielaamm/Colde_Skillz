@@ -8,6 +8,7 @@ import java.util.List;
 public class ExecuteMain {
     public void execute(List<Executable> decision) {
         for (Executable executable : decision) {
+            
             executable.execute(); //run the decisions of now
         }
         Knowledge knowledge = Knowledge.getInstance();
@@ -15,10 +16,11 @@ public class ExecuteMain {
         for (LongTimeProcess process : processes) {
             //run all the long time processes
             process.execute();
-            process.endTurn();
-            
+
         }
-        // [ ]: delete dead prosses
+        knowledge.endTurn();
+
+        // [x]: delete dead prosses
     }
 
     @Override

@@ -5,7 +5,7 @@ import penguin_game.IceBuilding;
 import penguin_game.PenguinGroup;
 
 public class AccelerateDecision implements Executable {
-    //NOTE: change it a little so look on it
+    // NOTE: change it a little so look on it
     private PenguinGroup penguinGroup;
 
     private IceBuilding source;
@@ -32,12 +32,13 @@ public class AccelerateDecision implements Executable {
             for (PenguinGroup penguinGroup : Knowledge.getGame().getAllPenguinGroups()) {
                 if (penguinGroup.destination == target && penguinGroup.source == source
                         && penguinGroup.penguinAmount == amount) {
-                    penguinGroup.accelerate();
+                    for (int i = 0; i < theNumberTimeOfAcc; i++) {
+                        penguinGroup.accelerate();
+                    }
                 }
             }
         }
     }
-
 
     public IceBuilding getSource() {
         if (source == null) {

@@ -5,6 +5,7 @@ import penguin_game.Game;
 import penguin_game.Iceberg;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -31,6 +32,12 @@ public class DistanceFunctions {
             return (int) (a.getSecond() - b.getSecond());
         });
         return toRet;
+    }
+
+    public static Vector<Pair<Iceberg, Double>> sortIcebegByDistance(Iceberg centers, List<Iceberg> toSort) {
+        List<Iceberg> list =  new LinkedList<Iceberg>();
+        list.add(centers);
+        return sortIcebegByDistance(list , toSort);
     }
 
 }

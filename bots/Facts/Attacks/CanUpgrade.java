@@ -4,10 +4,10 @@ import bots.Facts.Attack;
 import penguin_game.Iceberg;
 
 public class CanUpgrade extends Attack {
-    private Iceberg toUpgrade;
+    private Iceberg iceberg;
 
-    public CanUpgrade(Iceberg toUpgrade) {
-        this.toUpgrade = toUpgrade;
+    public CanUpgrade(Iceberg iceberg) {
+        this.iceberg = iceberg;
     }
 
     @Override
@@ -15,12 +15,12 @@ public class CanUpgrade extends Attack {
         return "CanUpgrade";
     }
 
-    public Iceberg getToUpgrade() {
-        return toUpgrade;
+    public Iceberg getIceberg() {
+        return iceberg;
     }
 
     @Override
     public String toString() {
-        return "CanUpgrade [toUpgrade=" + toUpgrade + "]";
+        return "CanUpgrade [toUpgrade=" + iceberg + "]";
     }
 }

@@ -13,17 +13,8 @@ import penguin_game.*;
 
 public class MyBot implements SkillzBot {
 
-    public void doTurn(Game game) {
+    public void doTurn(Game game) throws CloneNotSupportedException {
         Knowledge knowledge = Knowledge.getInstance();
-        List<Iceberg>  getMyIcepitalIcebergs = new ArrayList<>();
-        for (Iceberg iceberg : game.getMyIcepitalIcebergs()) {
-            getMyIcepitalIcebergs.add(iceberg);
-        }
-        List<Iceberg>  getAllIcebergs = new ArrayList<>();
-        for (Iceberg iceberg : game.getAllIcebergs()) {
-            getAllIcebergs.add(iceberg);
-        }
-        Knowledge.setClosest(DistanceFunctions.sortIcebegByDistance(getMyIcepitalIcebergs,getAllIcebergs));
         knowledge.setGame(game);
         game.debug("start turn, int part number: " + knowledge.getPartInGameNumber());
         if (game.getEnemyIcepitalIcebergs().length == 0) {

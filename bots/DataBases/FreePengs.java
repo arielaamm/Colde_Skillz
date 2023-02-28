@@ -8,6 +8,7 @@ import bots.Functions.NumOfAttackerCounter;
 import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
+import penguin_game.Player;
 
 import java.util.*;
 
@@ -68,7 +69,7 @@ public class FreePengs {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         FreePengs freePengs = new FreePengs(Knowledge.getGame());
         freePengs.map = new HashMap<>();
         for (Iceberg iceberg : map.keySet()) {
@@ -116,4 +117,20 @@ public class FreePengs {
         return amout;
     }
 
+    public Player ownerAtTheEnd(Iceberg iceberg) {
+
+        if (map.get(iceberg).get(map.get(iceberg).size() - 1).getFirst() > map.get(iceberg).get(map.get(iceberg).size() - 1).getSecond()) {
+            return Knowledge.getGame().getMyself();
+        } else {
+            return Knowledge.getGame().getEnemy();
+        }
+    }
+
+    public Map<Iceberg, Vector<Pair<Integer, Integer>>> getMap() {
+        return map;
+    }
+
+    public List<Executable> getWayFromBase() {
+        return wayFromBase;
+    }
 }

@@ -12,6 +12,9 @@ public class CanOverCome extends CanAttack{
     public String getDescription() {
         return "canOverCome";
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "CanOverCome [target=" + getTarget() + "]";
+    }
 }

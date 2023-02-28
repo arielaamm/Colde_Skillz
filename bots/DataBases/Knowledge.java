@@ -1,5 +1,6 @@
 package bots.DataBases;
 
+import bots.Functions.DistanceFunctions;
 import bots.LongTimeProcess.LongTimeProcess;
 import penguin_game.Game;
 import penguin_game.Iceberg;
@@ -19,8 +20,9 @@ public class Knowledge {
     private int partInGameNumber = 1; // can be 1/2/3
 
     private static Game game;
-    private static List<Iceberg> closest;
+    private static List<Iceberg> belt;
     private static int accelerationCost;
+    private boolean isBeltOurs;
 
     public static Knowledge getInstance() {
         if (knowledge == null) {
@@ -32,7 +34,8 @@ public class Knowledge {
     private Knowledge() {
         allProcesses = new ArrayList<>();
         partInGameNumber = 1;
-        closest = new LinkedList<>();
+        belt = new LinkedList<>();
+        isBeltOurs = false;
     }
 
 
@@ -70,15 +73,33 @@ public class Knowledge {
     public void setGame(Game game) {
         Knowledge.game = game;
         Knowledge.accelerationCost = game.accelerationCost;
+        List<Iceberg>  getMyIcepitalIcebergs = new ArrayList<>();
+        for (Iceberg iceberg : game.getMyIcepitalIcebergs()) {
+            getMyIcepitalIcebergs.add(iceberg);
+        }
+        List<Iceberg>  getAllIcebergs = new ArrayList<>();
+        for (Iceberg iceberg : game.getAllIcebergs()) {
+            getAllIcebergs.add(iceberg);
+        }
+        setBelt(DistanceFunctions.sortIcebegByDistance(getMyIcepitalIcebergs,getAllIcebergs));
+        boolean isBeltTaken = true;
+        for (Iceberg iceberg : belt) {
+            if (iceberg.owner != game.getMyself()) {
+                isBeltTaken = false;
+            }
+        }
+        if (isBeltTaken) {
+            isBeltOurs = true;
+        }
     }
 
-    public static List<Iceberg> getClosestIceberg() {
-        return closest;
+    public static List<Iceberg> getBeltIceberg() {
+        return belt;
     }
 
-    public static void setClosest(Vector<Pair<Iceberg, Double>> closest) {
+    private  void setBelt(Vector<Pair<Iceberg, Double>> belt) {
         for (int i = 0; i < 2; i++) {
-            Knowledge.closest.add(closest.get(i).getFirst());
+            Knowledge.belt.add(belt.get(i).getFirst());
         }
     }
 
@@ -87,5 +108,11 @@ public class Knowledge {
         return "Knowledge [allProcesses=" + allProcesses + ", partInGameNumber=" + partInGameNumber + "]";
     }
 
-  
+
+    public boolean isBeltOurs() {
+        return isBeltOurs;
+    }
+    public static boolean canAcclerate() {
+        return game.accelerationCost != 0;
+    }
 }

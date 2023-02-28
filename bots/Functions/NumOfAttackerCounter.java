@@ -113,6 +113,21 @@ public class NumOfAttackerCounter {
                 }
             }
             toRet.add(new Pair<>(first, second));
+            //this ends the game if one of the icepital get occupied
+            for (Iceberg myicpital : game.getMyIcepitalIcebergs()) {
+                if (target == myicpital) {
+                    if (second> first){
+                        return toRet;
+                    }
+                }
+            }
+            for (Iceberg enemicpital : game.getEnemyIcepitalIcebergs()) {
+                if (target == enemicpital) {
+                    if (first> second){
+                        return toRet;
+                    }
+                }
+            }
         }
         // [ ] calc the Long Time Process impact on the number of pengs in the iceberg
         return toRet;

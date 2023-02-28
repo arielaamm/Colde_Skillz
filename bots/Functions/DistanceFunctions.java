@@ -1,7 +1,6 @@
 package bots.Functions;
 
 import bots.DataBases.Pair;
-import penguin_game.Game;
 import penguin_game.Iceberg;
 
 import java.util.Collections;

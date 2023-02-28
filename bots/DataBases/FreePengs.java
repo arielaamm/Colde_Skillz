@@ -6,8 +6,8 @@ import bots.Executer.SendPengDecision;
 import bots.Executer.UpgradeIcebergDecision;
 import bots.Functions.NumOfAttackerCounter;
 import penguin_game.Game;
-import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
+import penguin_game.PenguinGroup;
 
 import java.util.*;
 
@@ -85,4 +85,35 @@ public class FreePengs {
         }
         return freePengs;
     }
+
+    public static int AmountAtIceberg(Iceberg iceberg, Game game) {
+        if (!(iceberg instanceof Iceberg)) {
+            return 0;
+        }
+        List<PenguinGroup> allPenguinGroups = new ArrayList<>();
+        for (PenguinGroup i : game.getAllPenguinGroups()) {
+            allPenguinGroups.add(i);
+        }
+        Collections.sort(allPenguinGroups, (a,b) -> {return (int)(a.turnsTillArrival - b.turnsTillArrival);});
+        int amout = iceberg.penguinAmount;
+        for (int i = 0; i < 40; i++) {
+            for (PenguinGroup penguinGroup : allPenguinGroups) {
+                if (penguinGroup.destination == iceberg) {
+                    if (penguinGroup.destination.owner == game.getMyself()) {
+                        amout += penguinGroup.penguinAmount;
+                    } else {
+                        amout -= penguinGroup.penguinAmount;
+                    }
+                }
+            }
+            if (amout > 0) {
+                amout += ((Iceberg) iceberg).penguinsPerTurn;
+            } else {
+                amout -= ((Iceberg) iceberg).penguinsPerTurn;;
+            }
+        }
+
+        return amout;
+    }
+
 }

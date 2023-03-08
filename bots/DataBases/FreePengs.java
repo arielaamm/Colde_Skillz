@@ -17,7 +17,14 @@ public class FreePengs {
     private List<Executable> wayFromBase;
     public FreePengs(Game game) {
         map = new HashMap<>();
-        for (Iceberg mine : game.getMyIcebergs()) {
+        List<Iceberg> list = new ArrayList<>();
+        for (Iceberg iceberg : game.getMyIcebergs()) {
+            list.add(iceberg);
+        }
+        for (Iceberg iceberg : game.getEnemyIcebergs()) {
+            list.add(iceberg);
+        }
+        for (Iceberg mine : list) {
             Vector<Pair<Integer, Integer>> nextTurns = NumOfAttackerCounter.getNumberOfAttackers(mine, game);
             game.debug("Iceberg: " + mine.toString() +"nextTurns: " + nextTurns.toString());
             map.put(mine, nextTurns);

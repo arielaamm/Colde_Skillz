@@ -103,7 +103,7 @@ public class Calculator {
                                 myIces)) {
                             totalSum += freePeng.get(pair.getFirst());
                         }
-                        int accelerationCost = game.accelerationCost;
+                        double accelerationCost = game.accelerationCost;
                         LongTimeProcess longTimeProcessSend = null;
                         LongTimeProcess longTimeProcessAcc = null;
                         for (Pair<Iceberg, Double> pair : sortIcebegByDistance) {
@@ -282,6 +282,10 @@ public class Calculator {
                 return false;
             }
             FreePengs goodFreePeng = culcNewFreePeng(freePengs, target, sendHelp);
+            if (goodFreePeng == null) {
+                return false;
+            }
+            Knowledge.getGame().debug("in the end the owner is: " + goodFreePeng.ownerAtTheEnd(target));
             if (goodFreePeng.ownerAtTheEnd(target) == Knowledge.getGame().getMyself()) {
                 for (Executable executable1 : goodFreePeng.getWayFromBase()) {
                     decisions.add(executable1);
@@ -296,6 +300,10 @@ public class Calculator {
         }
     }
     private FreePengs attackHelper(Iceberg target, FreePengs freePengs) throws CloneNotSupportedException {
+        Knowledge.getGame().debug("in attack helper");
+        Knowledge.getGame().debug(freePengs.getMap());
+        Knowledge.getGame().debug(freePengs.getNaturalMap());
+        Knowledge.getGame().debug("the owner in the end of target is = " + freePengs.ownerAtTheEnd(target));
         if (freePengs.ownerAtTheEnd(target) != Knowledge.getGame().getMyself()) {
             if (Knowledge.canAcclerate()) {
                 //prefer to acc, but if will see that the acc מיותר will throw it
@@ -339,9 +347,13 @@ public class Calculator {
             }
             Iceberg sendHelp = FindClosestSendHelp(target, freePengs);
             if (sendHelp == null) {
+                Knowledge.getGame().debug("sendHelp s null");
                 return null;
             }
             FreePengs goodFreePeng = culcNewFreePeng(freePengs, target, sendHelp);
+            if (goodFreePeng == null) {
+                return freePengs;
+            }
             if (goodFreePeng.ownerAtTheEnd(target) == Knowledge.getGame().getMyself()) {
                 return goodFreePeng;
             } else {
@@ -350,15 +362,24 @@ public class Calculator {
 
 
         } else {
+            Knowledge.getGame().debug("i am winning");
             return freePengs;
         }
     }
 
     private FreePengs culcNewFreePeng(FreePengs freePengs, Iceberg target, Iceberg sendHelp) throws CloneNotSupportedException {
+        Knowledge.getGame().debug("culcNewFreePeng" );
         int turnArrive = sendHelp.getTurnsTillArrival(target);
-        Pair<Integer, Integer> turnArrivePair = freePengs.getMap().get(target).get(turnArrive);
+        Pair<Integer, Integer> turnArrivePair;
+        if (target.owner == Knowledge.getGame().getNeutral()) {
+            turnArrivePair = freePengs.getNaturalMap().get(target).get(turnArrive);
+        } else {
+            turnArrivePair = freePengs.getMap().get(target).get(turnArrive);
+        }
         int sumOfPengInTeagetWhenArrive = - turnArrivePair.getFirst() + turnArrivePair.getSecond();
-        Executable executable = new SendPengDecision(sendHelp, target, sumOfPengInTeagetWhenArrive);
+        int numOfAttackers = Math.min(sumOfPengInTeagetWhenArrive + 1, freePengs.get(sendHelp));
+        Executable executable = new SendPengDecision(sendHelp, target, numOfAttackers);
+        Knowledge.getGame().debug("the decision is " + executable);
         FreePengs afterChange = freePengs.explore(executable);
         FreePengs goodFreePeng = attackHelper(target, afterChange);
         return goodFreePeng;
@@ -371,6 +392,8 @@ public class Calculator {
             if(freePengs.get(iceberg.getFirst()) > 0) {
                 sendHelp = iceberg.getFirst();
                 break;
+            } else {
+                Knowledge.getGame().debug("dont chose to send from " + iceberg.getFirst() + "because hase only " + freePengs.get(iceberg.getFirst()));
             }
         }
         return sendHelp;

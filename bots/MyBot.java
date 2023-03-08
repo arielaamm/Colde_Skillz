@@ -14,6 +14,9 @@ import penguin_game.*;
 public class MyBot implements SkillzBot {
 
     public void doTurn(Game game) throws CloneNotSupportedException {
+        for (Iceberg iceberg : game.getMyIcebergs()) {
+            game.debug(iceberg);
+        }
         Knowledge knowledge = Knowledge.getInstance();
         knowledge.setGame(game);
         game.debug("start turn, int part number: " + knowledge.getPartInGameNumber());

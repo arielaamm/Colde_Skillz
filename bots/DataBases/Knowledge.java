@@ -21,7 +21,7 @@ public class Knowledge {
 
     private static Game game;
     private static List<Iceberg> belt;
-    private static int accelerationCost;
+    private static double accelerationCost;
     private boolean isBeltOurs;
 
     public static Knowledge getInstance() {
@@ -69,6 +69,7 @@ public class Knowledge {
     public static Game getGame() {
         return game;
     }
+
 
     public void setGame(Game game) {
         Knowledge.game = game;

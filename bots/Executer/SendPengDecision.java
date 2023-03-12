@@ -1,10 +1,13 @@
 package bots.Executer;
 
+import penguin_game.Cloneberg;
+import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
 
 public class SendPengDecision implements Executable {
     private Iceberg source;
     private Iceberg target;
+    private Cloneberg targetCloneberg;
     private int sum;
 
     /**
@@ -17,16 +20,29 @@ public class SendPengDecision implements Executable {
         this.target = target;
         this.sum = sum;
     }
-
+    public SendPengDecision(Iceberg source, Cloneberg target, int sum) {
+        this.source = source;
+        this.targetCloneberg = target;
+        this.sum = sum;
+    }
     @Override
     public void execute() {
-        source.sendPenguins(target, sum);
+        if(targetCloneberg != null) {
+            source.sendPenguins(targetCloneberg, sum);
+        } else {
+            source.sendPenguins(target, sum);
+        }
     }
 
     @Override
     public String toString() {
-        return "SendPengDecision [source=" + source.toString() + ", target=" + target.toString() + ", sum=" + sum
-                + "]\n";
+        if (targetCloneberg != null) {
+            return "SendPengDecision [source=" + source.toString() + ", target=" + targetCloneberg.toString() + ", sum=" + sum
+                    + "]\n";
+        } else {
+            return "SendPengDecision [source=" + source.toString() + ", target=" + target.toString() + ", sum=" + sum
+                    + "]\n";
+        }
     }
 
     public Iceberg getSource() {

@@ -63,6 +63,7 @@ public class Knowledge {
         return closest;
     }
     public static void setClosest(Vector<Pair<Iceberg, Double>> closest) {
+        Knowledge.closest.clear();
         for (int i = 0; i < 2; i++) {
             Knowledge.closest.add(closest.get(i).getFirst());
         }

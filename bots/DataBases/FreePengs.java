@@ -8,12 +8,14 @@ import bots.Functions.NumOfAttackerCounter;
 import penguin_game.Game;
 import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
+import penguin_game.Player;
 
 import java.util.*;
 
 public class FreePengs {
     private Map<Iceberg, Vector<Pair<Integer, Integer>>> map;
     private List<Executable> wayFromBase;
+    private List<Iceberg> hasAMission;
     public FreePengs(Game game) {
         map = new HashMap<>();
         for (Iceberg mine : game.getMyIcebergs()) {
@@ -22,6 +24,7 @@ public class FreePengs {
             map.put(mine, nextTurns);
         }
         wayFromBase = new ArrayList<>();
+        hasAMission = new ArrayList<>();
     }
     public void update(Executable executable) {
         if (executable instanceof  SendPengDecision) {
@@ -36,10 +39,12 @@ public class FreePengs {
     }
 
     private void update(SendPengDecision sendPengDecision) {
+        hasAMission.add(sendPengDecision.getSource());
         map.put(sendPengDecision.getSource(), NumOfAttackerCounter.getNumberOfAttackers(sendPengDecision.getSource(), Knowledge.getGame(), sendPengDecision));
         map.put(sendPengDecision.getTarget(), NumOfAttackerCounter.getNumberOfAttackers(sendPengDecision.getTarget(), Knowledge.getGame(), sendPengDecision));
     }
     private void update(UpgradeIcebergDecision upgradeIcebergDecision) {
+        hasAMission.add(upgradeIcebergDecision.getToUpgrade());
         map.put(upgradeIcebergDecision.getToUpgrade(), NumOfAttackerCounter.getNumberOfAttackers(upgradeIcebergDecision.getToUpgrade(), Knowledge.getGame(), upgradeIcebergDecision));
     }
     private void update(AccelerateDecision accelerateDecision) {
@@ -58,7 +63,20 @@ public class FreePengs {
         } else {
             minimumFree = iceberg.penguinAmount;
         }
+        if (minimumFree > 0) {
+            if (hasAMission.contains(iceberg)) {
+                return 0;
+            }
+        }
         return minimumFree;
+    }
+    public Integer getMissingInFirstTurnLose(Iceberg iceberg) {
+        for (Pair<Integer, Integer> number : map.get(iceberg)) {
+            if (number.getSecond() > number.getFirst()) {
+                return number.getSecond() - number.getFirst();
+            }
+        }
+        return 0;
     }
     public FreePengs explore(Executable executable) throws CloneNotSupportedException {
         FreePengs freePengs = (FreePengs) this.clone();
@@ -66,9 +84,12 @@ public class FreePengs {
         freePengs.wayFromBase.add(executable);
         return freePengs;
     }
+    public Player ownerInTheEnd(Iceberg iceberg) {
+        return map.get(iceberg).lastElement().getFirst() > map.get(iceberg).lastElement().getSecond() ? Knowledge.getGame().getMyself() : Knowledge.getGame().getEnemy();
+    }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         FreePengs freePengs = new FreePengs(Knowledge.getGame());
         freePengs.map = new HashMap<>();
         for (Iceberg iceberg : map.keySet()) {
@@ -84,5 +105,17 @@ public class FreePengs {
             freePengs.wayFromBase.add(executable);
         }
         return freePengs;
+    }
+
+    public List<Iceberg> getHasAMission() {
+        return hasAMission;
+    }
+
+    public Map<Iceberg, Vector<Pair<Integer, Integer>>> getMap() {
+        return map;
+    }
+
+    public List<Executable> getWayFromBase() {
+        return wayFromBase;
     }
 }

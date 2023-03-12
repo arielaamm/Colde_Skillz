@@ -13,7 +13,7 @@ import penguin_game.*;
 
 public class MyBot implements SkillzBot {
 
-    public void doTurn(Game game) {
+    public void doTurn(Game game) throws CloneNotSupportedException {
         Knowledge knowledge = Knowledge.getInstance();
         List<Iceberg>  getMyIcepitalIcebergs = new ArrayList<>();
         for (Iceberg iceberg : game.getMyIcepitalIcebergs()) {

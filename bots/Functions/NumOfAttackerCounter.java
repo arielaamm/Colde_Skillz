@@ -22,22 +22,28 @@ public class NumOfAttackerCounter {
      * @return {@code Pair} first - num of attackers,  second - num of defender
      */
     public static Vector<Pair<Integer, Integer>> getNumberOfAttackers(Iceberg target, Game game, Executable executable) {
+        if (target == null) {
+            return null;
+        }
         List<PenguinGroup> interestingGroups = new ArrayList<>(); //will be a sub list of all peng groups that will get to the target
         for (PenguinGroup penguinGroup : game.getAllPenguinGroups()) {
             if (penguinGroup.destination == target) {
                 interestingGroups.add(penguinGroup);
             }
         }
+        int lastAttack = 0;
         List<PenguinGroup> attackers = new ArrayList<>(); //the attackers from the interesting
         List<PenguinGroup> defender = new ArrayList<>(); //the defender from the interesting
         for (PenguinGroup penguinGroup : interestingGroups) {
+            if (penguinGroup.turnsTillArrival > lastAttack) {
+                lastAttack = penguinGroup.turnsTillArrival;
+            }
             if (penguinGroup.owner == target.owner) {
                 defender.add(penguinGroup);
             } else {
                 attackers.add(penguinGroup);
             }
         }
-        int lastAttack = 40;
         Vector<Pair<Integer, Integer>> toRet = new Vector<>();
         if (target.owner == game.getMyself()){
             toRet.add(new Pair<>(target.penguinAmount, 0));
@@ -55,8 +61,8 @@ public class NumOfAttackerCounter {
         } else {
             toRet.add(new Pair<>(0, target.penguinAmount));
         }
-
-        for (int i = 0; i < lastAttack + 2 ; i++) {
+        lastAttack = Math.max(lastAttack, 40);
+        for (int i = 0; i < lastAttack ; i++) {
             int first, second;
             Pair<Integer, Integer> lastTurn = toRet.get(i);
             if (lastTurn.getFirst() > lastTurn.getSecond()){
@@ -85,10 +91,10 @@ public class NumOfAttackerCounter {
                 int newArriveTurn, lastArriveTime;
                 if (decision.getPenguinGroup() == null) {
                     lastArriveTime = (int) (decision.getSource().getTurnsTillArrival(decision.getTarget()) / Math.pow(game.accelerationFactor, decision.getTheNumberTimeOfAcc()));
-                    newArriveTurn = lastArriveTime / game.accelerationFactor + 1 + decision.getTheNumberTimeOfAcc();
+                    newArriveTurn = (int) (lastArriveTime / game.accelerationFactor) + 1 + decision.getTheNumberTimeOfAcc();
                 } else {
                     lastArriveTime = decision.getPenguinGroup().turnsTillArrival;
-                    newArriveTurn = lastArriveTime / game.accelerationFactor;
+                    newArriveTurn = (int) (lastArriveTime / game.accelerationFactor);
                 }
                 if (i+1 == newArriveTurn) {
                     first += decision.getAmount() / game.accelerationCost;

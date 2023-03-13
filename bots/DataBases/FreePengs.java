@@ -25,6 +25,10 @@ public class FreePengs {
         }
         wayFromBase = new ArrayList<>();
         hasAMission = new ArrayList<>();
+        if(Knowledge.getInstance().getPartInGameNumber() > 1 && game.turn % constants.turnToIcepitalWorks != 0)
+        {
+            hasAMission.add(game.getMyIcepitalIcebergs()[0]);
+        }
     }
     public void update(Executable executable) {
         if (executable instanceof  SendPengDecision) {
@@ -36,6 +40,7 @@ public class FreePengs {
         if (executable instanceof AccelerateDecision) {
             update((AccelerateDecision) executable);
         }
+
     }
 
     private void update(SendPengDecision sendPengDecision) {

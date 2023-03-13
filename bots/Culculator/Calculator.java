@@ -3,6 +3,7 @@ package bots.Culculator;
 import bots.DataBases.FreePengs;
 import bots.DataBases.Knowledge;
 import bots.DataBases.Pair;
+import bots.DataBases.constants;
 import bots.Executer.*;
 import bots.Facts.Alert;
 import bots.Facts.Alerts.UnderAttackAlert;
@@ -38,6 +39,7 @@ public class Calculator {
 
             }
         }
+        /* צריך לשנות */
         for (Iceberg iceberg : Knowledge.getClosest()) {
             if (iceberg.owner != game.getMyself()) {
                 boolean b = defend(iceberg, game, freePeng);
@@ -58,7 +60,7 @@ public class Calculator {
         }
 
         for (Attack attack : facts.attacks) {
-            if (attack.getDescription() == "CanUpgrade" && game.turn > 5) {
+            if (attack.getDescription() == "CanUpgrade") {
                 game.debug("starts a canUpgrade");
                 if (freePeng.get(((CanUpgrade) attack).getToUpgrade()) > ((CanUpgrade) attack)
                         .getToUpgrade().upgradeCost) {
@@ -89,7 +91,7 @@ public class Calculator {
             }
         }
         for (Attack attack : facts.attacks) {
-            game.debug("recognize an attack alert witch is: " + attack.getDescription());
+            game.debug("reconize an attack alert witch is: " + attack.getDescription());
             if (attack.getDescription() == "canAttack") {
                 CanAttack alert = (CanAttack) attack;
                 // find closest iceberg to attack from. NOT DONE
@@ -105,9 +107,7 @@ public class Calculator {
                     if (iceberg.owner == game.getEnemy()) {
                         spierPengs = iceberg.penguinsPerTurn * (1 + temp.getSecond().intValue());
                     }
-                    int amountAtArrived = alert.getTarget().penguinAmount + spierPengs;
-                    
-                    if (freePeng.get(iceberg) > amountAtArrived) {
+                    if (freePeng.get(iceberg) > alert.getTarget().penguinAmount + spierPengs) {
                         if (!(IsAttack.isEnemyAttacks(iceberg, game) && iceberg.owner == game.getNeutral())) {
                             // attack from this iceberg
                             SendPengDecision sendPengDecision = new SendPengDecision(iceberg, alert.getTarget(),
@@ -127,17 +127,18 @@ public class Calculator {
                             }
                             if (theAttacker.turnsTillArrival < iceberg.getTurnsTillArrival(alert.getTarget())) {
                                 // attack from this iceberg
-                                SendPengDecision sendPengDecision = new SendPengDecision(iceberg,
-                                        alert.getTarget(),
-                                        alert.getTarget().penguinAmount + 1 + spierPengs);
-                                game.debug("decide to attack from " + iceberg.id + " with " +
-                                        (alert.getTarget().penguinAmount + 1) + " pengs");
-                                decisions.add(sendPengDecision);
-                                freePeng.update(sendPengDecision);
-
+                                if (!iceberg.isUnderSiege) {
+                                    SendPengDecision sendPengDecision = new SendPengDecision(iceberg,
+                                            alert.getTarget(),
+                                            alert.getTarget().penguinAmount + 1 + spierPengs);
+                                    game.debug("decide to attack from " + iceberg.id + " with " +
+                                            (alert.getTarget().penguinAmount + 1) + " pengs");
+                                    decisions.add(sendPengDecision);
+                                    freePeng.update(sendPengDecision);
+                                }
                             } else {
-                                game.debug("decide to not attack from " + iceberg.id);
-                                game.debug("enemy i didn't attack is: " + alert.getTarget().id);
+                                game.debug("deside to not atack from " + iceberg.id);
+                                game.debug("enemy i didnt attack is: " + alert.getTarget().id);
                             }
                         }
                     }
@@ -147,9 +148,9 @@ public class Calculator {
         // switch (knowledge.getPartInGameNumber()) {
         switch (Knowledge.getInstance().getPartInGameNumber()) { // for now only check part 1
             case 1: // this is part one of the game!!!
-                if (game.goThroughSiegeCost > 0 && game.turn % 6 == 0) {
+                if (game.goThroughSiegeCost > 0 && game.turn % constants.turnToSiegePar1 == 0) {
                     for (Iceberg iceberg : game.getMyIcebergs()) {
-                        int freePengHere = freePeng.get(iceberg);
+                        int freePengHere = Math.min(freePeng.get(iceberg),10);
                         if (freePengHere >= 4) {
                             for (Iceberg enemyIceberg : game.getEnemyIcebergs()) {
                                 if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 3))) {
@@ -162,7 +163,7 @@ public class Calculator {
                 break;
             case 2: // this is part two of the game!!! for now same as one;
                 if (game.getCloneberg() != null) {
-                    if (game.turn % 2 == 0) {
+                    if (game.turn % constants.turnToClonePart2 == 0) {
                         for (Iceberg iceberg : game.getMyIcebergs()) {
                             if (!freePeng.getHasAMission().contains(iceberg)) {
                                 SendPengDecision sendPengDecision = new SendPengDecision(iceberg,
@@ -174,18 +175,19 @@ public class Calculator {
                         }
                     }
                 }
-                if (game.goThroughSiegeCost > 0 && game.turn % 8 == 0) {
+                if (game.goThroughSiegeCost > 0 && game.turn % constants.turnToSiegePar2 == 0) {
                     for (Iceberg iceberg : game.getMyIcebergs()) {
-                        int freePengHere = freePeng.get(iceberg);
-                        if (freePengHere >= 4) {
+                        int freePengHere = Math.min(freePeng.get(iceberg),10);
+                            if (freePengHere >= 4) {
                             for (Iceberg enemyIceberg : game.getEnemyIcebergs()) {
-                                if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 3))) {
-                                    iceberg.sendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 3));
+                                if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5))) {
+                                    iceberg.sendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5));
                                 }
                             }
                         }
                     }
                 }
+                break;
             case 3: // this is part three of the game!!!
                 break;
 
@@ -231,7 +233,7 @@ public class Calculator {
         if (firstTurnLose == 0) {
             return false;
         }
-        // now make faster the peng already in way but get late
+        // now make faster the peng allready in way but get late
         // fing all of those peng groups
         for (PenguinGroup penguinGroup : game.getMyPenguinGroups()) {
             if (penguinGroup.destination == underAttack) {
@@ -253,7 +255,7 @@ public class Calculator {
             if (canSendHelp.getFirst() != underAttack) {
                 int freeHere = freePeng.get(canSendHelp.getFirst());
                 if (freeHere <= 0) {
-                    game.debug("cant send from" + canSendHelp.getFirst() + "because have " + freeHere);
+                    game.debug("cant send from" + canSendHelp.getFirst() + "becuse have " + freeHere);
                     continue;
                 }
                 if (canSendHelp.getFirst().getTurnsTillArrival(underAttack) < firstTurnLose) {

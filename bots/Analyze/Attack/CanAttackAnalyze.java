@@ -17,14 +17,17 @@ public class CanAttackAnalyze extends AttackOption {
     }
 
     @Override
-    public List<Attack> getAlerts(Game game) {
+    public List<Attack> getAlerts(Game game) {  
+        Knowledge knowledge = Knowledge.getInstance();
+        if(game.turn % 2 == 0 && knowledge.getPartInGameNumber() != 1){
+            return attackOption.getAlerts(game);
+        }
         List<Attack> attackList = attackOption.getAlerts(game); // get prev alerts
         // culc the closest iceberg to put as targets
         List<Iceberg> optionToAttack = new ArrayList<>();
         for (Iceberg iceberg : game.getNeutralIcebergs()) {
             optionToAttack.add(iceberg); // add all naturl icebergs to attack
         }
-        Knowledge knowledge = Knowledge.getInstance();
         if(knowledge.getPartInGameNumber() != 1) {
             for (Iceberg iceberg : game.getEnemyIcebergs()) {
                 optionToAttack.add(iceberg); // add all enemys icebergs to attack

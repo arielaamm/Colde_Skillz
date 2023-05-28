@@ -21,7 +21,7 @@ To use this project, follow the steps below:
 
 2. **Clone the Repository**: Clone the project repository to your local machine using the following command:
    ```
-   git clone https://github.com/your-username/project-repo.git
+   git clone https://github.com/arielaamm/Colde_Skillz.git
    ```
 
 3. **Build the Project**: Navigate to the project directory and build the project using the following command:

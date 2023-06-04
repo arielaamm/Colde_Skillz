@@ -3,11 +3,9 @@ package bots.DataBases;
 import bots.LongTimeProcess.LongTimeProcess;
 import penguin_game.Game;
 import penguin_game.Iceberg;
+import penguin_game.PenguinGroup;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * this is a singleton!!!
@@ -20,7 +18,28 @@ public class Knowledge {
 
     private static Game game;
     private static List<Iceberg> closest;
+    private List<Iceberg> naturalWeTaking = new ArrayList<>();
+    public void updateNaturalWeTaking() {
+        //add all icbergs i attack now
+        for (PenguinGroup penguinGroup : game.getMyPenguinGroups()) {
+            if (penguinGroup.destination.owner == game.getNeutral()) {
+                if (!naturalWeTaking.contains((Iceberg) penguinGroup.destination)) {
+                    naturalWeTaking.add((Iceberg) penguinGroup.destination);
+                }
+            }
+        }
+        //remove all icebergs allready taken
+        Iterator<Iceberg> iterator = naturalWeTaking.listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().owner != game.getNeutral()) {
+                iterator.remove();
+            }
+        }
+    }
 
+    public List<Iceberg> getNaturalWeTaking() {
+        return naturalWeTaking;
+    }
 
     public static Knowledge getInstance() {
         if (knowledge == null) {

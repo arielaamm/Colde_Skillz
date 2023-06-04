@@ -1,12 +1,10 @@
 package bots.Culculator;
 
-import bots.DataBases.FreePengs;
-import bots.DataBases.Knowledge;
-import bots.DataBases.Pair;
-import bots.DataBases.constants;
+import bots.DataBases.*;
 import bots.Executer.*;
 import bots.Facts.Alert;
 import bots.Facts.Alerts.UnderAttackAlert;
+import bots.Facts.Alerts.UzatroDefAlert;
 import bots.Facts.AnalyzeOutput;
 import bots.Facts.Announcement;
 import bots.Facts.Attack;
@@ -15,6 +13,7 @@ import bots.Facts.Attacks.CanUpgrade;
 import bots.Functions.DistanceFunctions;
 import bots.Functions.IsAttack;
 import bots.Functions.NumOfAttackerCounter;
+import bots.LongTimeProcess.LongTimeProcess;
 import penguin_game.*;
 
 import java.util.*;
@@ -56,6 +55,46 @@ public class Calculator {
                 UnderAttackAlert underAttack = (UnderAttackAlert) alert;
                 game.debug(underAttack);
                 defend(underAttack.getTarget(), game, freePeng);
+            }
+        }
+        //TODO: check this code []
+        for (Alert alert : facts.alerts) {
+            if (alert.getDescription() == "UzatroDefAlert") {
+                game.debug("handle Uzatro problem");
+                UzatroDefAlert uzatroDefAlert = (UzatroDefAlert) alert;
+                //first create the DataBase for the problem
+                NaturalIceberg dataBase = new NaturalIceberg(uzatroDefAlert.getUnderAttack());
+                game.debug(dataBase);
+                if (dataBase.getOwners().get(uzatroDefAlert.getAttacker().turnsTillArrival) != game.getMyself()) {
+                    game.debug("Uzatro won");
+                    continue;
+                } else {
+                    if (uzatroDefAlert.getAttacker().currentSpeed != 1) {
+                        //reconize the attack!!
+                        int number_sent = 0;
+                        Vector<Pair<Iceberg, Double>> sorted = DistanceFunctions.sortMyIcebergs(uzatroDefAlert.getUnderAttack());
+                        for (Pair<Iceberg, Double> pair : sorted) {
+                            Iceberg iceberg = pair.getFirst();
+                            if (freePeng.get(iceberg) > 0) {
+                                LongTimeProcess sendAndAcc = new LongTimeProcess();
+                                SendPengDecision sendPengDecision = new SendPengDecision(iceberg, uzatroDefAlert.getUnderAttack(), freePeng.get(iceberg));
+                                sendAndAcc.addProcess(sendAndAcc, 0);
+                                AccelerateDecision accelerateDecision = new AccelerateDecision(iceberg, uzatroDefAlert.getUnderAttack(), freePeng.get(iceberg), 1);
+                                sendAndAcc.addProcess(accelerateDecision, 1);
+                                Knowledge.getInstance().addProcess(sendAndAcc);
+                            }
+
+                        }
+
+
+                    } else {
+                        //chose to do nothing and wait to see if enemy tries to acc
+                        //chose to do it only if its the first turn that the enemy pengs are in the way
+                        if(uzatroDefAlert.getUnderAttack().getTurnsTillArrival(uzatroDefAlert.getAttacker().source) - 2 <= uzatroDefAlert.getAttacker().turnsTillArrival) {
+                            return;
+                        }
+                    }
+                }
             }
         }
 
@@ -178,7 +217,7 @@ public class Calculator {
                 if (game.goThroughSiegeCost > 0 && game.turn % constants.turnToSiegePar2 == 0) {
                     for (Iceberg iceberg : game.getMyIcebergs()) {
                         int freePengHere = Math.min(freePeng.get(iceberg),10);
-                            if (freePengHere >= 4) {
+                        if (freePengHere >= 4) {
                             for (Iceberg enemyIceberg : game.getEnemyIcebergs()) {
                                 if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5))) {
                                     iceberg.sendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5));
@@ -198,11 +237,10 @@ public class Calculator {
 
     /**
      * this func send pengs from closest iceberg to the attacked one if it wll helps
-     * 
+     *
      * @param underAttack
      * @param game
      * @param freePeng
-     * @param alert
      * @return {@code true} - win, {@code false} - lose
      */
     private boolean defend(Iceberg underAttack, Game game, FreePengs freePeng) throws CloneNotSupportedException {

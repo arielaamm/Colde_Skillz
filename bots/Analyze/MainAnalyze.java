@@ -10,6 +10,7 @@ import bots.Analyze.Attack.DefaultAttackAnalyze;
 import bots.Analyze.IDS.DefultIDS;
 import bots.Analyze.IDS.IDS;
 import bots.Analyze.IDS.UnderAttackIDS;
+import bots.Analyze.IDS.UzatroDefIDS;
 import bots.Facts.AnalyzeOutput;
 import penguin_game.Game;
 
@@ -25,7 +26,7 @@ public abstract class MainAnalyze {
      * @return analyzed data - {@link AnalyzeOutput}
      */
     public static AnalyzeOutput getFacts(Game game) {
-        IDS ids = new UnderAttackIDS(new DefultIDS());
+        IDS ids = new UzatroDefIDS(new UnderAttackIDS(new DefultIDS()));
         AttackOption attackOption = new CanUpgradeAnalyze(new CanAttackAnalyze(new DefaultAttackAnalyze()));
         AnnouncementShouterAbs announcementShouterAbs = new StartPartTwo(new DefultShouter());
         return new AnalyzeOutput(ids.getAlerts(game), 

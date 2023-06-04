@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public abstract class IDS {
+
     /**
      * @param game
      * @return list of {@link Alert}

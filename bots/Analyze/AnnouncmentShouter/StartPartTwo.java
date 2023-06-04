@@ -21,7 +21,7 @@ public class StartPartTwo extends AnnouncementShouterAbs{
         if (knowledge.getPartInGameNumber() != 1) {
             return announcements;
         }
-        if (game.getNeutralIcebergs().length <= 1) {
+        if (game.getNeutralIcebergs().length <= 2) {
             Announcement announcement = new StartSecondPart();
             announcements.add(announcement);
         } else {

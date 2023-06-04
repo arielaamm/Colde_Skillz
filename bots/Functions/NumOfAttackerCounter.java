@@ -1,10 +1,7 @@
 package bots.Functions;
 
 import bots.DataBases.Pair;
-import bots.Executer.AccelerateDecision;
-import bots.Executer.Executable;
-import bots.Executer.SendPengDecision;
-import bots.Executer.UpgradeIcebergDecision;
+import bots.Executer.*;
 import penguin_game.Game;
 import penguin_game.Iceberg;
 import penguin_game.PenguinGroup;
@@ -82,7 +79,9 @@ public class NumOfAttackerCounter {
             if (executable instanceof SendPengDecision ) {
                 SendPengDecision decision = (SendPengDecision) executable;
                 if (target == decision.getTarget()) {
-                    second += decision.getSum();
+                    if(!(executable instanceof SendSiegeDecision)) {
+                        second += decision.getSum();
+                    }
                     //handle when the peng get to the terget
                 }
             }

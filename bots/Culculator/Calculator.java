@@ -78,9 +78,10 @@ public class Calculator {
                             if (freePeng.get(iceberg) > 0) {
                                 LongTimeProcess sendAndAcc = new LongTimeProcess();
                                 SendPengDecision sendPengDecision = new SendPengDecision(iceberg, uzatroDefAlert.getUnderAttack(), freePeng.get(iceberg));
-                                sendAndAcc.addProcess(sendAndAcc, 0);
+                                sendAndAcc.addProcess(sendPengDecision, 0);
                                 AccelerateDecision accelerateDecision = new AccelerateDecision(iceberg, uzatroDefAlert.getUnderAttack(), freePeng.get(iceberg), 1);
                                 sendAndAcc.addProcess(accelerateDecision, 1);
+                                freePeng.update(sendAndAcc);
                                 Knowledge.getInstance().addProcess(sendAndAcc);
                             }
 
@@ -193,7 +194,8 @@ public class Calculator {
                         if (freePengHere >= 4) {
                             for (Iceberg enemyIceberg : game.getEnemyIcebergs()) {
                                 if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 3))) {
-                                    iceberg.sendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 3));
+                                    SendSiegeDecision sendSiegeDecision = new SendSiegeDecision(iceberg, enemyIceberg, (int) (freePengHere / 3));
+                                    decisions.add(sendSiegeDecision);
                                 }
                             }
                         }
@@ -220,7 +222,9 @@ public class Calculator {
                         if (freePengHere >= 4) {
                             for (Iceberg enemyIceberg : game.getEnemyIcebergs()) {
                                 if (iceberg.canSendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5))) {
-                                    iceberg.sendPenguinsToSetSiege(enemyIceberg, (int) (freePengHere / 5));
+                                    SendSiegeDecision sendSiegeDecision = new SendSiegeDecision(iceberg, enemyIceberg, (int) (freePengHere / 5));
+                                    freePeng.update(sendSiegeDecision);
+                                    decisions.add(sendSiegeDecision);
                                 }
                             }
                         }

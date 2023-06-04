@@ -5,10 +5,10 @@ import penguin_game.IceBuilding;
 import penguin_game.Iceberg;
 
 public class SendPengDecision implements Executable {
-    private Iceberg source;
-    private Iceberg target;
+    protected Iceberg source;
+    protected Iceberg target;
     private Cloneberg targetCloneberg;
-    private int sum;
+    protected int sum;
 
     /**
      * @param source - {@link Iceberg}: the source iceberg
